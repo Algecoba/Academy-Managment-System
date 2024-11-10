@@ -1,0 +1,90 @@
+/* Estilo general de la interfaz */
+.root {
+    -fx-font-family: 'Calibri';
+    -fx-background-color: #f0f0f0; /* Fondo gris claro */
+}
+
+/* Estilo para el VBox contenedor */
+.vbox {
+    -fx-padding: 20;
+    -fx-spacing: 10;
+}
+
+/* Labels del formulario */
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333; /* Gris oscuro para contraste */
+}
+
+/* Estilo para TextFields (campos de texto) */
+.text-field {
+    -fx-background-color: #ffffff; /* Fondo blanco */
+    -fx-border-color: #cccccc; /* Borde gris claro */
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 5 10;
+    -fx-font-size: 13px;
+    -fx-text-fill: #333;
+}
+
+/* Estilo para ComboBox */
+.combo-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 5 10;
+    -fx-font-size: 13px;
+    -fx-text-fill: #333;
+}
+
+.combo-box .arrow {
+    -fx-background-color: #cccccc;
+}
+
+/* Estilo para DatePicker */
+.date-picker {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 5 10;
+    -fx-font-size: 13px;
+    -fx-text-fill: #333;
+}
+
+/* Estilo para ListView */
+.list-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 5 10;
+}
+
+/* Estilo para el botón de Guardar */
+.guardarButton {
+    -fx-background-color: #4CAF50; /* Verde */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-background-radius: 8;
+    -fx-padding: 8 15;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.3, 0, 2); /* Sombra */
+}
+
+/* Estilo para el botón de Cancelar */
+.cancelarButton {
+    -fx-background-color: #F44336; /* Rojo */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-background-radius: 8;
+    -fx-padding: 8 15;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.3, 0, 2); /* Sombra */
+}
+
+/* Sombra para los botones */
+.button:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 8, 0.4, 0, 3);
+}

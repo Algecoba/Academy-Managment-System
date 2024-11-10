@@ -1,0 +1,77 @@
+.login_container {
+    -fx-background-color: #d4d4d4;
+}
+
+/*Letf side of the login*/
+
+.login_logo_container {
+    -fx-background-color: #0b853c;
+    -fx-alignment: center;
+}
+
+.login_logo_container Text{
+    -fx-font-size: 4em;
+    -fx-font-weight: bold;
+    -fx-fill: #FFFFFF;
+}
+
+.login_logo_container FontAwesomeIconView {
+    /* We use fill to work with Shapes>Text in SCENE BUILDER
+    And we use Label from Containers or control we use Background*/
+    -fx-fill: #ffffff;
+}
+
+/*Right Side of the Login (selector, username, password, button)*/
+
+.account_selector {
+    -fx-background-color: #ffffff;
+}
+
+.account_selector .label {
+    -fx-text-fill: #0b853c;
+    -fx-font-size: 1.2em;
+}
+
+account_selector .arrow {
+    -fx-background-color: #0b853c;
+}
+
+#choice-box-popup-menu {
+    -fx-background-color: #ffffff;
+}
+
+.login_form_container {
+    -fx-spacing: 20;
+}
+
+.login_form_container Label{
+    -fx-font-size: 1.1em;
+    -fx-font-weight: bold;
+}
+
+.login_form_container Button {
+    -fx-background-color: #0b853c;
+    -fx-text-fill: #ffffff;
+    -fx-pref-width: 150;
+    -fx-pref-height: 30;
+    -fx-font-size: 1.2em;
+}
+
+.login_form_container Button:hover{
+    -fx-cursor: hand;
+}
+
+.error_label {
+    -fx-text-fill: #FF0000;
+}
+
+
+
+
+
+
+
+
+
+
+

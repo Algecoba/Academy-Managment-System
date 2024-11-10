@@ -1,0 +1,52 @@
+.menu_container {
+    -fx-background-color: linear-gradient(to bottom right, #0b853c, #246861);
+    -fx-alignment: top-center;
+}
+
+.left_container {
+    -fx-background-color: #FFFFFF;
+    -fx-effect: dropshadow(two-pass-box,#AAAAAA,5,0,0,4);
+}
+
+.menu_container FontAwesomeIconView {
+    -fx-fill: #FFFFFF;
+}
+
+.menu_container Text {
+    -fx-fill: #FFFFFF;
+    -fx-font-size: 2em;
+}
+
+/* Bottoms*/
+
+.menu_container Button{
+    -fx-pref-width: 200;
+    -fx-pref-height: 40;
+    -fx-background-color: linear-gradient(to bottom right, #0b853c, #246861);
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 20 em;
+    -fx-alignment: center-left;
+    -fx-effect: dropshadow(three-pass-box, #022b14,5,0,-2,1);
+}
+
+.menu_container Button:hover {
+    -fx-cursor:hand;
+}
+
+.menu_container Button FontAwesomeIconView {
+    -fx-fill: #ffffff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

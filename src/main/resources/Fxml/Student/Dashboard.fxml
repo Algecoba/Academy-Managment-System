@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" styleClass="dashboard" stylesheets="@../../Styles/DashboardStudent.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.acb.ams.Controllers.Student.DashboardController">
+   <Text fx:id="username" layoutX="53.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="user_name" text="Hola, Alex" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0" />
+   <Text layoutX="25.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="section_title" text="Mis cursos" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="60.0" />
+   <Text layoutX="736.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="section_title" text="Promedios" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="60.0" />
+   <HBox layoutX="25.0" layoutY="84.0" prefHeight="200.0" prefWidth="850.0" spacing="10.0" styleClass="courses_view" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="80.0">
+      <ListView fx:id="CoursesListView" prefHeight="200.0" prefWidth="850.0" />
+   </HBox>
+   <VBox layoutX="976.0" layoutY="80.0" prefHeight="200.0" prefWidth="180.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+      <styleClass>
+         <String fx:value="avg_summary_container" />
+         <String fx:value="summary_view" />
+      </styleClass>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Periodo 1:">
+         <VBox.margin>
+            <Insets left="10.0" top="10.0" />
+         </VBox.margin>
+      </Text>
+      <Label fx:id="average_P1" text="4.5">
+         <VBox.margin>
+            <Insets left="20.0" />
+         </VBox.margin>
+      </Label>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Periodo 2:">
+         <VBox.margin>
+            <Insets left="10.0" top="10.0" />
+         </VBox.margin>
+      </Text>
+      <Label fx:id="average_P2" text="4.6">
+         <VBox.margin>
+            <Insets left="20.0" />
+         </VBox.margin>
+      </Label>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Periodo 3:">
+         <VBox.margin>
+            <Insets left="10.0" top="10.0" />
+         </VBox.margin>
+      </Text>
+      <Label fx:id="average_P3" text="4.8">
+         <VBox.margin>
+            <Insets left="20.0" />
+         </VBox.margin>
+      </Label>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Periodo 4:">
+         <VBox.margin>
+            <Insets left="10.0" top="10.0" />
+         </VBox.margin>
+      </Text>
+      <Label fx:id="average_P4" text="5.0">
+         <VBox.margin>
+            <Insets left="20.0" />
+         </VBox.margin>
+      </Label>
+   </VBox>
+   <Text layoutX="25.0" layoutY="311.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="section_title" text="Actividades" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="300.0" />
+   <ListView layoutX="25.0" layoutY="327.0" prefHeight="200.0" prefWidth="200.0" styleClass="activity_listView" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="325.0" />
+   <Label fx:id="loginDate" layoutX="811.0" layoutY="24.0" styleClass="date_lbl" text="Hoy, 4-11-2024" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0" />
+</AnchorPane>

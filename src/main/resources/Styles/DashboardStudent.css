@@ -1,0 +1,117 @@
+.dashboard {
+    -fx-background-color: #e1e1e1;
+}
+
+.user_name {
+    -fx-font-size: 2.6em;
+    -fx-font-family: "Calibri Light";
+}
+
+.date_lbl {
+    -fx-text-fill: #939393;
+    -fx-font-size: 1em;
+    -fx-font-family: "Calibri Light";
+}
+
+/*Curses View*/
+.courses_view {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10 0 0 10;
+    -fx-border-width: 0 1 0 0;
+    -fx-border-color: #DDDDDD;
+}
+
+.courses {
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(three-pass-box, #AAAAAA,10, 0, 0, 10);
+}
+
+.courses VBox {
+    -fx-background-color: #FFFFFF;
+}
+
+.courses Text {
+    -fx-fill: #FFFFFF;
+    -fx-font-family: "Calibri Light";
+    -fx-font-size: 1em;
+}
+
+.courses_card {
+    -fx-background-color: linear-gradient(to right,#0b853c,#022b14);
+}
+
+.courses_text_subject{
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: Calibri;
+    -fx-font-size: 1.5em;
+    -fx-font-weight: bold;
+}
+.courses_text{
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: Calibri;
+    -fx-font-size: 1em;
+    -fx-font-weight: 700;
+}
+
+/* Averages summary */
+
+.summary_view {
+    -fx-background-color: #FFFFFF;
+}
+
+.avg_summary_container {
+    -fx-padding: 10;
+    -fx-border-color: #999999;
+    -fx-border-width: 1;
+}
+
+.summary_view Text {
+    -fx-fill: #6c6c6c;
+    -fx-font-family: "Calibri Light";
+    -fx-font-size: 1.2em;
+}
+
+/*Activities view*/
+
+.section_title {
+    -fx-font-size: 1.4em;
+    -fx-font-family: "Calibri Light";
+}
+
+.activity_listView {
+    -fx-background-color: #EEEEEE;
+    -fx-border-width: 0 0 0 0;
+    -fx-border-color: #AAAAAA;
+}
+
+.activity_listView .scroll-bar:vertical{
+    -fx-scale-x: 0;
+}
+
+.list-cell {
+    -fx-background-color: #EEEEEE;
+    -fx-padding: 15 0 15 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
