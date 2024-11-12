@@ -5,8 +5,9 @@
 /*Letf side of the login*/
 
 .login_logo_container {
-    -fx-background-color: #0b853c;
-    -fx-alignment: center;
+    -fx-background-color:linear-gradient(to bottom right, #2d658c, #2ca772);
+    -fx-border-color:#000;
+    -fx-border-width:.4px 0px .4px .4px;
 }
 
 .login_logo_container Text{
@@ -50,11 +51,12 @@ account_selector .arrow {
 }
 
 .login_form_container Button {
-    -fx-background-color: #0b853c;
-    -fx-text-fill: #ffffff;
-    -fx-pref-width: 150;
-    -fx-pref-height: 30;
-    -fx-font-size: 1.2em;
+    -fx-background-color:linear-gradient(to bottom, #278f96, #2d645f);
+    -fx-background-radius:1px;
+    -fx-cursor:hand;
+    -fx-text-fill:#fff;
+    -fx-font-size:14px;
+    -fx-font-family:"Arial";
 }
 
 .login_form_container Button:hover{
