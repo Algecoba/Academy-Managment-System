@@ -7,7 +7,9 @@ import javafx.scene.control.Button;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+
 public class AdminMenuController implements Initializable {
+
     @FXML
     public Button ad_UsersBtn;
     @FXML

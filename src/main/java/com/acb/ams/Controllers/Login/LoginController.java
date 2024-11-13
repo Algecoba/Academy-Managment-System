@@ -1,4 +1,4 @@
-package com.acb.ams.Controllers;
+package com.acb.ams.Controllers.Login;
 
 import com.acb.ams.Models.Model;
 import javafx.fxml.FXML;

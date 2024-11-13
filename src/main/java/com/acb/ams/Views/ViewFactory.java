@@ -1,63 +1,95 @@
 package com.acb.ams.Views;
-
-/*
-List Factory
-Class that control que scene or stage of the UI to show*/
-
+import com.acb.ams.Controllers.Login.LoginController;
+import com.acb.ams.Controllers.Professor.ProfessorController;
 import com.acb.ams.Controllers.Student.StudentController;
-import javafx.fxml.FXML;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
 public class ViewFactory {
-    //Student Views
-    private AnchorPane dashboardView;
 
-    public ViewFactory() {}
+    // Implementación del patrón Singleton para garantizar que solo haya una instancia
+    private static ViewFactory instance;
 
-    public AnchorPane getDashboardView() {
-        if(dashboardView == null) {
-            try{
-                dashboardView = new FXMLLoader(getClass().getResource("/Fxml/Student/Dashboard.fxml")).load();
-            }
-            catch(Exception e){
-                e.printStackTrace();
-            }
+    public ViewFactory() {
+        // Constructor vacio
+    }
+
+    
+
+    public static ViewFactory getInstance() {
+        if (instance == null) {
+            instance = new ViewFactory();
         }
-        return dashboardView;
+        return instance;
     }
 
-    public void showLoginWindow() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/Login.fxml"));
-        createStage(loader);
-    }
+    /**
+     * Método basico para mostrar las ventanas
+     * 
+     * @param fxmlPath Ruta al archivo FXML que queremos cargar.
+     * @param controller El controlador que queremos inyectar en el FXML.
+     */
+    private void showWindow(String fxmlPath, Object controller) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            if (controller != null) {
+                loader.setController(controller); // Inyectar el controlador
+            }
 
-    public void showStudentWindow() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/Student/Student.fxml"));
-        StudentController studentController = new StudentController();
-        loader.setController(studentController);
-        createStage(loader);
-    }
+            AnchorPane root = loader.load(); // Cargar el FXML
 
-    private void createStage(FXMLLoader loader) {
-        Scene scene = null;
-        try{
-            scene = new Scene(loader.load());
+            // Crear la nueva escena con la vista cargada
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("Ventana");
+
+            // Mostrar la ventana
+            stage.show();
+
         } catch (Exception e) {
             e.printStackTrace();
+            // Aquí podrías agregar un manejo de errores más avanzado, como mostrar un diálogo de error.
         }
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.setTitle("Academy Management System (AMS)");
-        stage.show();
     }
 
-    public void closeStage(Stage stage) {
-        stage.close();
+    // Método para mostrar la ventana de "Student" (Ejemplo específico)
+    public void showStudentWindow() {
+        StudentController studentController = new StudentController();
+        showWindow("/Fxml/Student/Student.fxml", studentController);
     }
+
+    // Método para mostrar la ventana de "Profesor" (Ejemplo específico)
+    public void showProfessorWindow() {
+        ProfessorController professorController = new ProfessorController();
+        showWindow("/Fxml/Professor/Professor.fxml", professorController);
+    }
+
+    // Método para mostrar la ventana principal (ejemplo genérico)
+    /**
+     * public void showMainWindow() {
+        MainController mainController = new MainController();
+        showWindow("/Fxml/Main/Main.fxml", mainController);
+    }
+     */
+    public void showLoginWindow(){
+        LoginController loginController = new LoginController();
+        showWindow("/Fxml/Main/Login.fxml", loginController);
+    }
+
+    /**
+     * Método para cerrar la ventana (Stage)
+     * 
+     * @param stage La ventana (Stage) que se desea cerrar.
+     */
+    public void closeStage(Stage stage) {
+        if (stage != null) {
+            stage.close(); // Cerrar la ventana
+        }
+    }
+
 
 }
