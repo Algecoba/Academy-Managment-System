@@ -11,7 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
-public class ProfessorControler {
+public class ProfessorController {
 
     // Columna para mostrar actividades específicas dentro de la tabla de calificaciones
     @FXML
