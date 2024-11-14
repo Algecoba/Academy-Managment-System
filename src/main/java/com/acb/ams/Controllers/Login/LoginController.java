@@ -31,6 +31,7 @@ public class LoginController implements Initializable {
         // Añade opciones al ChoiceBox para seleccionar tipo de cuenta
         accountSelector_cmb.getItems().addAll("Estudiante", "Profesor", "Administrador");
 
+        error_label.setVisible(false);
         // Configura la acción del botón de inicio de sesión
         login_btn.setOnAction(e -> onLogin());
     }
@@ -43,13 +44,43 @@ public class LoginController implements Initializable {
 
         // Validación de ejemplo: verifica si el usuario y contraseña no están vacíos
         if (username.isEmpty() || password.isEmpty() || accountType == null) {
+            error_label.setVisible(true);
             error_label.setText("Por favor, completa todos los campos.");
             return;
+        }else{
+            error_label.setVisible(false);
         }
 
+
         // Si pasa la validación, cierra la ventana actual y abre la ventana del usuario
+        //Aqui debo colocar un swicth o un if para gestionar que ventana se abre
         Stage stage = (Stage) username_field.getScene().getWindow();
-        Model.getInstance().getViewFactory().closeStage(stage);
-        Model.getInstance().getViewFactory().showStudentWindow();
+        switch (accountType) {
+            case "Estudiante":
+                Model.getInstance().getViewFactory().closeStage(stage);  // Cerrar ventana actual
+                Model.getInstance().getViewFactory().showStudentWindow(stage);  // Mostrar ventana estudiante
+                break;
+        
+            case "Profesor":
+                Model.getInstance().getViewFactory().closeStage(stage);  // Cerrar ventana actual
+                Model.getInstance().getViewFactory().showProfessorWindow(stage);  // Mostrar ventana profesor
+                break;
+        
+            case "Administrador":
+                Model.getInstance().getViewFactory().closeStage(stage);  // Cerrar ventana actual
+                Model.getInstance().getViewFactory().showAdminWindow(stage);  // Mostrar ventana administrador
+                break;
+        
+            default:
+                // Mostrar un mensaje de alerta si el tipo de cuenta no es válido
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Tipo de cuenta no válido");
+                alert.setContentText("El tipo de cuenta proporcionado no es reconocido. Por favor, intente de nuevo.");
+                alert.showAndWait();
+                break;
+        }
+        
+
     }
 }

@@ -3,7 +3,7 @@ package com.acb.ams.Models;
 import com.acb.ams.Views.ViewFactory;
 
 
-//Clase model...???
+//Clase model...Intermediaria ?? 
 public class Model {
     private static Model model;
     private final ViewFactory viewFactory;

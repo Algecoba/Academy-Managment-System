@@ -34,27 +34,37 @@ public class DashboardController implements Initializable {
     @FXML
     private ListView<Course> CoursesListView;
 
-    // Simulación de obtener los cursos y promedios (puedes reemplazarlo con datos reales)
+    // Inicialización de la lista de cursos
     private List<Course> courses;
-
-    //private double[] averages = {4.5, 4.6, 4.8, 5.0}; // Simulación de promedios
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Configurar el nombre de usuario, puedes obtenerlo de la sesión o base de datos
         username.setText("Hola, Alejandro");  // Cambiar según el usuario
 
-        // Mostrar los cursos en el ListView
-        CoursesListView.getItems().addAll(courses);
+        // Inicializar la lista de cursos
+        courses = getCourses(); // Aquí deberías obtener los cursos de la base de datos o de una simulación
+
+        // Si no hay cursos, no agregar nada al ListView
+        if (courses != null && !courses.isEmpty()) {
+            CoursesListView.getItems().addAll(courses);
+        }
 
         // Mostrar los promedios en las etiquetas correspondientes
-        //average_P1.setText(String.format("%.1f", averages[0]));
-        //average_P2.setText(String.format("%.1f", averages[1]));
-        //average_P3.setText(String.format("%.1f", averages[2]));
-        //average_P4.setText(String.format("%.1f", averages[3]));
+        // Para efectos de prueba, se agregan promedios simulados
+        average_P1.setText("4.5");
+        average_P2.setText("4.6");
+        average_P3.setText("4.8");
+        average_P4.setText("5.0");
 
         // Mostrar la fecha actual
         LocalDate currentDate = LocalDate.now();
         loginDate.setText("Hoy, " + currentDate.toString());
+    }
+
+    // Método simulado para obtener cursos
+    private List<Course> getCourses() {
+        // Aquí deberías obtener la lista de cursos de la base de datos o algún servicio
+        return List.of(); // Retorna una lista vacía para simular que no hay cursos
     }
 }

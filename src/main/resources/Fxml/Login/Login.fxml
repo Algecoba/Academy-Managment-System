@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="login_container" stylesheets="@../Styles/Login.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.acb.ams.Controllers.LoginController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="login_container" stylesheets="@../../Styles/Login.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.acb.ams.Controllers.LoginController">
    <children>
       <VBox alignment="CENTER" layoutX="62.0" prefHeight="400.0" prefWidth="300.0" styleClass="login_logo_container" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -19,7 +19,7 @@
          </children></VBox>
       <VBox alignment="CENTER" layoutX="500.0" layoutY="6.0" prefHeight="200.0" prefWidth="300.0" spacing="20.0" styleClass="login_form_container" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <TextField fx:id="usename_field" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="200.0" promptText="Usuario" />
+            <TextField fx:id="username_field" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="200.0" promptText="Usuario" />
             <PasswordField fx:id="password_field" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="200.0" promptText="Contraseña" />
             <Label text="Elige tu tipo de usuario:" />
             <ChoiceBox fx:id="accountSelector_cmb" prefHeight="25.0" prefWidth="150.0" styleClass="account_selector" />

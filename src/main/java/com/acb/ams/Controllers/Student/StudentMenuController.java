@@ -2,7 +2,9 @@ package com.acb.ams.Controllers.Student;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
@@ -11,7 +13,10 @@ import javafx.scene.Scene;
 import javafx.scene.Node;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
+
+import com.acb.ams.Models.Model;
 
 public class StudentMenuController implements Initializable {
 
@@ -40,34 +45,40 @@ public class StudentMenuController implements Initializable {
     }
 
     private void goToDashboard(javafx.event.ActionEvent event) {
-        loadScene("/path/to/Dashboard.fxml", event);
+        //loadScene("/path/to/Dashboard.fxml", event);
     }
 
     private void goToCourses(javafx.event.ActionEvent event) {
-        loadScene("/path/to/Courses.fxml", event);
+        //loadScene("/path/to/Courses.fxml", event);
     }
 
     private void goToProfile(javafx.event.ActionEvent event) {
-        loadScene("/path/to/Profile.fxml", event);
+        //loadScene("/path/to/Profile.fxml", event);
     }
 
     private void logOut(javafx.event.ActionEvent event) {
-        // Aquí puedes agregar la lógica de cierre de sesión
+    // Crear el cuadro de diálogo de confirmación
+    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+    alert.setTitle("Cerrar Sesion");
+    alert.setHeaderText("¿Seguro que desea cerrar sesión?");
+    alert.setContentText("Hasta la Proxima!");
+
+    // Mostrar el cuadro de diálogo y esperar la respuesta
+    Optional<ButtonType> result = alert.showAndWait();
+
+    // Verificar la respuesta del usuario
+    if (result.isPresent() && result.get() == ButtonType.OK) {
+        // Si el usuario acepta, cerrar la ventana actual y mostrar la ventana de login
         System.out.println("Cerrando sesión...");
-        loadScene("/path/to/Login.fxml", event);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
+        Model.getInstance().getViewFactory().showLoginWindow(null);
+    } else {
+        // Si el usuario cancela, quedarse en el Dashboard
+        System.out.println("Cancelando cierre de sesión.");
     }
+}
 
-    private void loadScene(String fxmlFile, javafx.event.ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
-            Parent root = loader.load();
 
-            // Cambiar la escena en la ventana actual
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace(); // Manejo básico de errores
-        }
-    }
+    
 }
