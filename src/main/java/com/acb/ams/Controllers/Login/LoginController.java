@@ -1,6 +1,8 @@
 package com.acb.ams.Controllers.Login;
 
+import com.acb.ams.Data.Database;
 import com.acb.ams.Models.Model;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -12,7 +14,7 @@ import java.util.ResourceBundle;
 public class LoginController implements Initializable {
 
     @FXML
-    private TextField username_field; 
+    private TextField username_field;
 
     @FXML
     private PasswordField password_field;
@@ -29,50 +31,52 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Añade opciones al ChoiceBox para seleccionar tipo de cuenta
-        accountSelector_cmb.getItems().addAll("Estudiante", "Profesor", "Administrador");
-
+        accountSelector_cmb.getItems().addAll("Estudiante", "Profesor", "Coordinador");
         error_label.setVisible(false);
+
         // Configura la acción del botón de inicio de sesión
-        login_btn.setOnAction(e -> onLogin());
+        login_btn.setOnAction(
+                e -> onLogin(username_field.getText(), password_field.getText(), accountSelector_cmb.getValue()));
     }
 
-    private void onLogin() {
-        // Aquí podrías agregar la lógica de autenticación
-        String username = username_field.getText();
-        String password = password_field.getText();
-        String accountType = accountSelector_cmb.getValue();
-
-        // Validación de ejemplo: verifica si el usuario y contraseña no están vacíos
-        if (username.isEmpty() || password.isEmpty() || accountType == null) {
+    private void onLogin(String username, String password, String accountType) {
+        try {
+            if (username.isEmpty() || password.isEmpty() || accountType == null) {
+                error_label.setVisible(true);
+                error_label.setText("Por favor, completa todos los campos.");
+            } else {
+                boolean isValidUser = Database.verifyUser(username, password, accountType);
+                if (isValidUser) {
+                    openWindow(accountType);
+                } else {
+                    error_label.setVisible(true);
+                    error_label.setText("Credenciales Incorrectos o Rol no permitido.");
+                }
+            }
+        } catch (Exception e) {
             error_label.setVisible(true);
-            error_label.setText("Por favor, completa todos los campos.");
-            return;
-        }else{
-            error_label.setVisible(false);
+            error_label.setText("Ocurrió un error en el inicio de sesión. Verifica la consola.");
+            e.printStackTrace(); // Esto imprimirá el error en la consola
         }
+    }
+    
 
-
-        // Si pasa la validación, cierra la ventana actual y abre la ventana del usuario
-        //Aqui debo colocar un swicth o un if para gestionar que ventana se abre
+    public void openWindow(String accountType) {
         Stage stage = (Stage) username_field.getScene().getWindow();
         switch (accountType) {
             case "Estudiante":
-                Model.getInstance().getViewFactory().closeStage(stage);  // Cerrar ventana actual
-                Model.getInstance().getViewFactory().showStudentWindow(stage);  // Mostrar ventana estudiante
+                Model.getInstance().getViewFactory().closeStage(stage);
+                Model.getInstance().getViewFactory().showStudentWindow(stage);
                 break;
-        
             case "Profesor":
-                Model.getInstance().getViewFactory().closeStage(stage);  // Cerrar ventana actual
-                Model.getInstance().getViewFactory().showProfessorWindow(stage);  // Mostrar ventana profesor
+                Model.getInstance().getViewFactory().closeStage(stage);
+                Model.getInstance().getViewFactory().showProfessorWindow(stage);
                 break;
-        
-            case "Administrador":
-                Model.getInstance().getViewFactory().closeStage(stage);  // Cerrar ventana actual
-                Model.getInstance().getViewFactory().showAdminWindow(stage);  // Mostrar ventana administrador
+            case "Coordinador":
+                Model.getInstance().getViewFactory().closeStage(stage);
+                Model.getInstance().getViewFactory().showAdminWindow(stage);
                 break;
-        
             default:
-                // Mostrar un mensaje de alerta si el tipo de cuenta no es válido
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("Tipo de cuenta no válido");
@@ -80,7 +84,5 @@ public class LoginController implements Initializable {
                 alert.showAndWait();
                 break;
         }
-        
-
     }
 }

@@ -138,31 +138,46 @@ public class ProfessorControler {
 
         // Iniciar vistas según el menú
         // ProfesorDashboardVisible();
+        //NOtas Asistencias Criterios
         btnLogout.setOnAction(event -> logOut(event));
+        btnCalificaciones.setOnAction(event -> showActividades(event));
+        btnAsistencias.setOnAction(event -> showAsistencias(event));
+        btnCriterios.setOnAction(event -> showCriterios(event));
+        ///btnAsistencias.setOnAction(event -> showAsistencias(event));
     }
 
     // Cambiar la vista a Dashboard
     @FXML
     private void showDashboard(ActionEvent event) {
-        // ProfesorDashboardVisible();
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("Aqui no hay nada");
+        //alert.setContentText("El tipo de cuenta proporcionado no es reconocido. Por favor, intente de nuevo.");
+        alert.showAndWait();
     }
 
     // Cambiar la vista a Actividades
     @FXML
     private void showActividades(ActionEvent event) {
-        // ProfesorActividadesVisible();
+        ProfessorActividades.setVisible(true);
+        ProfessorAsistencias.setVisible(false);
+        ProfessorCriterios.setVisible(false);
     }
 
     // Cambiar la vista a Asistencias
     @FXML
     private void showAsistencias(ActionEvent event) {
-        // ProfesorAsistenciasVisible();
+        ProfessorAsistencias.setVisible(true);
+        ProfessorActividades.setVisible(false);
+        ProfessorCriterios.setVisible(false);
     }
 
     // Cambiar la vista a Criterios
     @FXML
     private void showCriterios(ActionEvent event) {
-        // ProfesorCriteriosVisible();
+        ProfessorCriterios.setVisible(true);
+        ProfessorAsistencias.setVisible(false);
+        ProfessorActividades.setVisible(false);
     }
 
     // LogOut de la aplicación
