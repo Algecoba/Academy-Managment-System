@@ -1,12 +1,19 @@
 package com.acb.ams.Controllers.Admin;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
+import com.acb.ams.Models.Model;
 
 public class AdminMenuController implements Initializable {
 
@@ -31,7 +38,7 @@ public class AdminMenuController implements Initializable {
         ad_CursosBtn.setOnAction(event -> handleCursosBtn());
         ad_ReportesBtn.setOnAction(event -> handleReportesBtn());
         ad_ProfileBtn.setOnAction(event -> handleProfileBtn());
-        ad_LogOutBtn.setOnAction(event -> handleLogOutBtn());
+        ad_LogOutBtn.setOnAction(event -> handleLogOutBtn(event));
     }
 
     // Método para manejar el evento del botón Usuarios
@@ -65,8 +72,22 @@ public class AdminMenuController implements Initializable {
     }
 
     // Método para manejar el evento del botón Log Out
-    private void handleLogOutBtn() {
-        System.out.println("Botón Log out presionado");
-        // Lógica para cerrar sesión
+    @FXML
+    private void handleLogOutBtn(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmar");
+        alert.setHeaderText("¿Seguro que desea cerrar sesión?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // Lógica para cerrar la sesión y mostrar la ventana de login
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.close();
+            Model.getInstance().getViewFactory().showLoginWindow(null);
+        } else {
+            System.out.println("Cancelando cierre de sesion.");
+        }
+
     }
+
 }
