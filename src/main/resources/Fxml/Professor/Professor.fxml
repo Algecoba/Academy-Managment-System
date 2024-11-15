@@ -72,7 +72,7 @@
                             <Button fx:id="btnGuardarNotas" mnemonicParsing="false" styleClass="boton-guardar" text="Guardar" />
                         </VBox>
                     </AnchorPane>
-                    <AnchorPane fx:id="ProfessorAsistencias" layoutX="10.0" layoutY="10.0" prefHeight="690.0" prefWidth="1068.0" visible="false">
+                    <AnchorPane fx:id="ProfessorAsistencias" layoutX="10.0" layoutY="10.0" prefHeight="690.0" prefWidth="1068.0">
                         <VBox prefHeight="690.0" prefWidth="1080.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <padding>
                                 <Insets left="20.0" right="20.0" top="20.0" />
@@ -98,7 +98,7 @@
                             <Button fx:id="btnGuardarAsistencia" mnemonicParsing="false" styleClass="boton-guardar" text="Guardar" />
                         </VBox>
                     </AnchorPane>
-                    <AnchorPane fx:id="ProfessorCriterios" layoutX="14.0" layoutY="10.0" prefHeight="700.0" prefWidth="1080.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <AnchorPane fx:id="ProfessorCriterios" layoutX="14.0" layoutY="10.0" prefHeight="700.0" prefWidth="1080.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                         <VBox layoutX="36.0" layoutY="-11.0" prefHeight="700.0" prefWidth="1080.0" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <padding>
                                 <Insets left="20.0" right="20.0" top="20.0" />
@@ -128,7 +128,7 @@
                             </TableView>
                         </VBox>
                     </AnchorPane>
-                    <AnchorPane fx:id="ProffesorDashboard" layoutY="48.0" prefHeight="700.0" prefWidth="1080.0" stylesheets="@../../Styles/ProfessorView.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                    <AnchorPane fx:id="ProffesorDashboard" layoutY="48.0" prefHeight="700.0" prefWidth="1080.0" stylesheets="@../../Styles/ProfessorView.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                 </AnchorPane>
             </center>
         </BorderPane>

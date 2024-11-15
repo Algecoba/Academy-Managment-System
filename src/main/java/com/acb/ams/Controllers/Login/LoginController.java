@@ -1,6 +1,6 @@
 package com.acb.ams.Controllers.Login;
 
-import com.acb.ams.Data.Database;
+import com.acb.ams.Data.DatabaseConnector;
 import com.acb.ams.Models.Model;
 
 import javafx.fxml.FXML;
@@ -41,25 +41,30 @@ public class LoginController implements Initializable {
 
     private void onLogin(String username, String password, String accountType) {
         try {
+            // Validación de campos vacíos
             if (username.isEmpty() || password.isEmpty() || accountType == null) {
                 error_label.setVisible(true);
                 error_label.setText("Por favor, completa todos los campos.");
+                return;
+            }
+
+            // Verificar usuario en la base de datos
+            boolean isValidUser = DatabaseConnector.verifyUser(username, password, accountType);
+
+            if (isValidUser) {
+                openWindow(accountType); // Abrir ventana correspondiente
             } else {
-                boolean isValidUser = Database.verifyUser(username, password, accountType);
-                if (isValidUser) {
-                    openWindow(accountType);
-                } else {
-                    error_label.setVisible(true);
-                    error_label.setText("Credenciales Incorrectos o Rol no permitido.");
-                }
+                error_label.setVisible(true);
+                error_label.setText("Credenciales incorrectas o rol no permitido.");
             }
         } catch (Exception e) {
             error_label.setVisible(true);
             error_label.setText("Ocurrió un error en el inicio de sesión. Verifica la consola.");
-            e.printStackTrace(); // Esto imprimirá el error en la consola
+            e.printStackTrace();
         }
     }
-    
+
+
 
     public void openWindow(String accountType) {
         Stage stage = (Stage) username_field.getScene().getWindow();
