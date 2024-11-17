@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1080.0" stylesheets="@../../Styles/AdminMainView.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.acb.ams.Controllers.Admin.AdminUsersController">
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" stylesheets="@../../Styles/AdminMainView.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.acb.ams.Controllers.Admin.AdminUsersController">
    <VBox fx:id="mainContainer" prefHeight="720.0" prefWidth="540.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
       <padding>
          <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
@@ -46,7 +46,7 @@
          <Button fx:id="btnCancelar" mnemonicParsing="false" styleClass="cancelarButton" text="Cancelar" />
       </HBox>
    </VBox>
-   <VBox fx:id="studentBox" layoutX="540.0" prefHeight="720.0" prefWidth="540.0" spacing="10.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="540.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+   <VBox fx:id="studentBox" disable="true" layoutX="540.0" prefHeight="720.0" prefWidth="540.0" spacing="10.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="540.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <padding>
          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
       </padding>
@@ -56,7 +56,7 @@
       <Label text="Curso: " />
       <ComboBox fx:id="cursoComboBox" prefWidth="200.0" promptText="seleccionar" />
    </VBox>
-   <VBox fx:id="professorBox" layoutX="540.0" layoutY="6.0" prefHeight="720.0" prefWidth="540.0" spacing="10.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="540.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+   <VBox fx:id="professorBox" layoutX="540.0" layoutY="6.0" prefHeight="720.0" prefWidth="540.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="540.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <padding>
          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
       </padding>

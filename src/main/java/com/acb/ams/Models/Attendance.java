@@ -2,49 +2,87 @@ package com.acb.ams.Models;
 
 import java.time.LocalDate;
 
+
 public class Attendance {
-    private int id;
-    private LocalDate date;
-    private char status;
+    private int asisId;
+    private int estId;
+    private int asigId;
+    private LocalDate asisFecha;
+    private String asisEstado;
 
-    public Attendance(int id, LocalDate date, char status) {
-        this.id = id;
-        this.date = date;
-        this.status = status;
+    // Relación con Estudiante (Persona)
+    private Person estudiante;
+
+    // Relación con Asignatura
+    private Subject asignatura;
+
+    public Attendance(int asisId, int estId, int asigId, LocalDate asisFecha, String asisEstado, Person estudiante,
+            Subject asignatura) {
+        this.asisId = asisId;
+        this.estId = estId;
+        this.asigId = asigId;
+        this.asisFecha = asisFecha;
+        this.asisEstado = asisEstado;
+        this.estudiante = estudiante;
+        this.asignatura = asignatura;
     }
 
-    public int getId() {
-        return id;
+    public int getAsisId() {
+        return asisId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setAsisId(int asisId) {
+        this.asisId = asisId;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public int getEstId() {
+        return estId;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setEstId(int estId) {
+        this.estId = estId;
     }
 
-    public char getStatus() {
-        return status;
+    public int getAsigId() {
+        return asigId;
     }
 
-    public void setStatus(char status) {
-        this.status = status;
+    public void setAsigId(int asigId) {
+        this.asigId = asigId;
     }
 
-    @Override
-    public String toString() {
-        return "Attendance: \n" +
-               "ID: " + id + "\n" +
-               "Date: " + date + "\n" +
-               "Status: " + status + "\n";
+    public LocalDate getAsisFecha() {
+        return asisFecha;
     }
 
-    
+    public void setAsisFecha(LocalDate asisFecha) {
+        this.asisFecha = asisFecha;
+    }
+
+    public String getAsisEstado() {
+        return asisEstado;
+    }
+
+    public void setAsisEstado(String asisEstado) {
+        this.asisEstado = asisEstado;
+    }
+
+    public Person getEstudiante() {
+        return estudiante;
+    }
+
+    public void setEstudiante(Person estudiante) {
+        this.estudiante = estudiante;
+    }
+
+    public Subject getAsignatura() {
+        return asignatura;
+    }
+
+    public void setAsignatura(Subject asignatura) {
+        this.asignatura = asignatura;
+    }
+
+    // Constructor, Getters and Setters
     
 }

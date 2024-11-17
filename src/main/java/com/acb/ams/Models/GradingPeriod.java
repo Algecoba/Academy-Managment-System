@@ -1,61 +1,67 @@
 package com.acb.ams.Models;
 
+
+import java.time.LocalDate;
 import java.util.List;
 
 //Clase refetente a Corte/Periodo
 public class GradingPeriod {
+    private int corId;
+    private LocalDate corFinicial;
+    private LocalDate corFfinal;
+    private int corNumCorte;
+
+    // Relación con Notas
+    private List<Qualification> notas;
+
+    public GradingPeriod(int corId, LocalDate corFinicial, LocalDate corFfinal, int corNumCorte, List<Qualification> notas) {
+        this.corId = corId;
+        this.corFinicial = corFinicial;
+        this.corFfinal = corFfinal;
+        this.corNumCorte = corNumCorte;
+        this.notas = notas;
+    }
+
+    public int getCorId() {
+        return corId;
+    }
+
+    public void setCorId(int corId) {
+        this.corId = corId;
+    }
+
+    public LocalDate getCorFinicial() {
+        return corFinicial;
+    }
+
+    public void setCorFinicial(LocalDate corFinicial) {
+        this.corFinicial = corFinicial;
+    }
+
+    public LocalDate getCorFfinal() {
+        return corFfinal;
+    }
+
+    public void setCorFfinal(LocalDate corFfinal) {
+        this.corFfinal = corFfinal;
+    }
+
+    public int getCorNumCorte() {
+        return corNumCorte;
+    }
+
+    public void setCorNumCorte(int corNumCorte) {
+        this.corNumCorte = corNumCorte;
+    }
+
+    public List<Qualification> getNotas() {
+        return notas;
+    }
+
+    public void setNotas(List<Qualification> notas) {
+        this.notas = notas;
+    }
+
+
     
-    private int id;
-    private int number;
-    private List<Activities> activities;
-    private double finalGrade;
-
-    public GradingPeriod(int id, int number, double finalGrade) {
-        this.id = id;
-        this.number = number;
-        this.finalGrade = finalGrade;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    public List<Activities> getActivities() {
-        return activities;
-    }
-
-    public void setActivities(List<Activities> activities) {
-        this.activities = activities;
-    }
-
-    public double getFinalGrade() {
-        return finalGrade;
-    }
-
-    public void setFinalGrade(double finalGrade) {
-        this.finalGrade = finalGrade;
-    }
-
-    @Override
-    public String toString() {
-        return "GradingPeriod: \n" +
-               "ID: " + id + "\n" +
-               "Number: " + number + "\n" +
-               "Activities: " + activities + "\n" +
-               "Final Grade: " + finalGrade + "\n";
-    }
-
-
 }
