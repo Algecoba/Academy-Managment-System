@@ -4,10 +4,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import com.acb.ams.Models.Model;
 
 public class AdminUsersController implements Initializable {
 
@@ -21,7 +22,7 @@ public class AdminUsersController implements Initializable {
     private TextField identificacionTxt;
 
     @FXML
-    private ComboBox<String> tipoIdTxt;
+    private ComboBox<String> tipoIdTxt; // Renombrado para claridad
 
     @FXML
     private TextField nombresTxt;
@@ -75,33 +76,73 @@ public class AdminUsersController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Añadir opciones al ComboBox
         tipoUsuarioComboBox.getItems().addAll("Estudiante", "Profesor", "Administrador");
+        tipoIdTxt.getItems().addAll("Tarjeta de Identidad", "Cédula", "Registro civil", "Tarjeta de extranjería");
+
         // Configurar el evento de cambio de selección
-        tipoUsuarioComboBox.setOnAction(event -> handleUserTypeSelection());
+        tipoUsuarioComboBox.setOnAction(event -> typeUserSelection());
+
+        // Configurar el botón de guardar
+        btnGuardar.setOnAction(event -> btnGuardarAction());
+
         // Ocultar secciones específicas al iniciar
         studentBox.setVisible(false);
         professorBox.setVisible(false);
+        acudienteBox.setVisible(false);
     }
 
-    private void handleUserTypeSelection() {
-        String selectedType = tipoUsuarioComboBox.getValue();
+    private void typeUserSelection() {
+        // Obtener el tipo de usuario seleccionado
+        String typeUser = tipoUsuarioComboBox.getValue();
+
         // Ocultar todas las secciones por defecto
         studentBox.setVisible(false);
         professorBox.setVisible(false);
-        acudienteBox.setVisible(false); // Agrega esta línea si deseas ocultar `acudienteBox` también.
-        
+        acudienteBox.setVisible(false);
+
         // Mostrar la sección correspondiente al tipo de usuario seleccionado
-        switch (selectedType) {
-            case "Estudiante":
-                studentBox.setVisible(true);
-                break;
-            case "Profesor":
-                professorBox.setVisible(true);
-                break;
-            case "Administrador":
-                // Administrador no necesita ninguna sección extra
-                break;
-            default:
-                break;
+        if ("Estudiante".equals(typeUser)) {
+            studentBox.setVisible(true);
+        } else if ("Profesor".equals(typeUser)) {
+            professorBox.setVisible(true);
         }
+    }
+
+    private void btnGuardarAction() {
+        try {
+            // Validar los campos necesarios antes de guardar
+            if (tipoUsuarioComboBox.getValue() == null || identificacionTxt.getText().isEmpty() || tipoIdTxt.getValue() == null) {
+                showAlert("Error", "Por favor, complete todos los campos obligatorios.", Alert.AlertType.ERROR);
+                return;
+            }
+
+            // Insertar datos en el modelo
+            Model.getInstance().insertPerson(
+                tipoUsuarioComboBox.getValue(),
+                identificacionTxt.getText(),
+                tipoIdTxt.getValue(),
+                nombresTxt.getText(),
+                apellidosTxt.getText(),
+                direccionTxt.getText(),
+                barrioTxt.getText(),
+                ciudadTxt.getText(),
+                correoTxt.getText(),
+                celularTxt.getText(),
+                fechaMatriculaPicker.getValue(),
+                cursoComboBox.getValue(),
+                fechaContratacionPicker.getValue()
+            );
+
+            showAlert("Éxito", "Los datos se han guardado correctamente.", Alert.AlertType.INFORMATION);
+
+        } catch (Exception e) {
+            showAlert("Error", "Ocurrió un error al guardar los datos: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    private void showAlert(String title, String message, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
