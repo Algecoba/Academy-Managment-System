@@ -1,7 +1,8 @@
 package com.acb.ams.Controllers.Login;
 
-import com.acb.ams.Data.DatabaseConnector;
+//import com.acb.ams.Data.DatabaseConnector;
 import com.acb.ams.Models.Model;
+//import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -49,8 +50,7 @@ public class LoginController implements Initializable {
             }
 
             // Verificar usuario en la base de datos
-            boolean isValidUser = DatabaseConnector.verifyUser(username, password, accountType);
-
+            boolean isValidUser = Model.getInstance().verifyUser(username, password, accountType);
             if (isValidUser) {
                 openWindow(accountType); // Abrir ventana correspondiente
             } else {

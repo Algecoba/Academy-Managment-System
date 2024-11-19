@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
 import javafx.scene.text.Text;
 import java.net.URL;
 import java.time.LocalDate;
@@ -13,20 +14,20 @@ import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
 
-    @FXML
-    private Text username;
+    public Text saludoNombreTxt;
 
-    @FXML
-    private Label average_P1;
+    //Mostrar los promedios de cada periodo del estudiante
+    public Label promedio1lbl;
+    public Label promedio2lbl;
+    public Label promedio3lbl;
+    public Label promedio4lbl;
 
-    @FXML
-    private Label average_P2;
-
-    @FXML
-    private Label average_P3;
-
-    @FXML
-    private Label average_P4;
+    //Visualización de las ultimas actividades realizadas por el estudiante
+    //En todas sus asignaturas
+    public TableColumn colAsignatura;
+    public TableColumn colActividad;
+    public TableColumn colFecha;
+    public TableColumn colNota;
 
     @FXML
     private Label loginDate;
@@ -40,7 +41,7 @@ public class DashboardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Configurar el nombre de usuario, puedes obtenerlo de la sesión o base de datos
-        username.setText("Hola, Alejandro");  // Cambiar según el usuario
+        saludoNombreTxt.setText("Hola, Alejandro");  // Cambiar según el usuario
 
         // Inicializar la lista de cursos
         courses = getCourses(); // Aquí deberías obtener los cursos de la base de datos o de una simulación
@@ -52,10 +53,10 @@ public class DashboardController implements Initializable {
 
         // Mostrar los promedios en las etiquetas correspondientes
         // Para efectos de prueba, se agregan promedios simulados
-        average_P1.setText("4.5");
-        average_P2.setText("4.6");
-        average_P3.setText("4.8");
-        average_P4.setText("5.0");
+        promedio1lbl.setText("4.5");
+        promedio1lbl.setText("4.6");
+        promedio1lbl.setText("4.8");
+        promedio1lbl.setText("5.0");
 
         // Mostrar la fecha actual
         LocalDate currentDate = LocalDate.now();

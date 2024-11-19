@@ -3,38 +3,63 @@ package com.acb.ams.Models;
 import java.util.List;
 
 public class Curriculum {
-    private int id;
-    private String code;
-    private List<Subject> subjects;
-    
-    public Curriculum(int id, String code) {
-        this.id = id;
-        this.code = code;
+    private int penId;
+    private String penCodigo;
+    private int penAnioPensum;
+    private int penCantasignaturas;
+
+    // Relación con Asignaturas
+    private List<Subject> asignaturas;
+
+    public Curriculum(int penId, String penCodigo, int penAnioPensum, int penCantasignaturas,
+            List<Subject> asignaturas) {
+        this.penId = penId;
+        this.penCodigo = penCodigo;
+        this.penAnioPensum = penAnioPensum;
+        this.penCantasignaturas = penCantasignaturas;
+        this.asignaturas = asignaturas;
     }
 
-    public int getId() {
-        return id;
+    public int getPenId() {
+        return penId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPenId(int penId) {
+        this.penId = penId;
     }
 
-    public String getCode() {
-        return code;
+    public String getPenCodigo() {
+        return penCodigo;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setPenCodigo(String penCodigo) {
+        this.penCodigo = penCodigo;
     }
 
-    public List<Subject> getSubjects() {
-        return subjects;
+    public int getPenAnioPensum() {
+        return penAnioPensum;
     }
 
-    public void setSubjects(List<Subject> subjects) {
-        this.subjects = subjects;
+    public void setPenAnioPensum(int penAnioPensum) {
+        this.penAnioPensum = penAnioPensum;
     }
 
+    public int getPenCantasignaturas() {
+        return penCantasignaturas;
+    }
+
+    public void setPenCantasignaturas(int penCantasignaturas) {
+        this.penCantasignaturas = penCantasignaturas;
+    }
+
+    public List<Subject> getAsignaturas() {
+        return asignaturas;
+    }
+
+    public void setAsignaturas(List<Subject> asignaturas) {
+        this.asignaturas = asignaturas;
+    }
+
+    // Constructor, Getters and Setters
     
 }

@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../../Styles/ProfessorView.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.acb.ams.Controllers.Professor.ProfessorControler">
     <AnchorPane prefHeight="720.0" prefWidth="1280.0">
@@ -28,11 +29,11 @@
                     </padding>
                     <FontAwesomeIconView glyphName="USER" size="100" styleClass="icono-perfil" />
                     <Label fx:id="NombreProfesor" styleClass="nombre-profesor" text="Mr. Sosa" />
-                    <Button fx:id="btnDashboard" mnemonicParsing="false" styleClass="boton-menu" text="Dashboard" />
-                    <Button fx:id="btnCalificaciones" mnemonicParsing="false" styleClass="boton-menu" text="Notas" />
-                    <Button fx:id="btnAsistencias" mnemonicParsing="false" styleClass="boton-menu" text="Asistencias" />
-                    <Button fx:id="btnCriterios" mnemonicParsing="false" styleClass="boton-menu" text="Criterios" />
-                    <Button fx:id="btnLogout" mnemonicParsing="false" styleClass="boton-menu" text="LogOut" />
+                    <Button fx:id="btnDashboard" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" styleClass="boton-menu" text="Dashboard" />
+                    <Button fx:id="btnCalificaciones" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" styleClass="boton-menu" text="Notas" />
+                    <Button fx:id="btnAsistencias" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" styleClass="boton-menu" text="Asistencias" />
+                    <Button fx:id="btnCriterios" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" styleClass="boton-menu" text="Criterios" />
+                    <Button fx:id="btnLogout" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" styleClass="boton-menu" text="LogOut" />
                 </VBox>
             </left>
             <top>
@@ -72,7 +73,7 @@
                             <Button fx:id="btnGuardarNotas" mnemonicParsing="false" styleClass="boton-guardar" text="Guardar" />
                         </VBox>
                     </AnchorPane>
-                    <AnchorPane fx:id="ProfessorAsistencias" layoutX="10.0" layoutY="10.0" prefHeight="690.0" prefWidth="1068.0">
+                    <AnchorPane fx:id="ProfessorAsistencias" layoutX="10.0" layoutY="10.0" prefHeight="690.0" prefWidth="1068.0" visible="false">
                         <VBox prefHeight="690.0" prefWidth="1080.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <padding>
                                 <Insets left="20.0" right="20.0" top="20.0" />
@@ -83,7 +84,7 @@
                                 <Label text="Fecha: " />
                                 <DatePicker fx:id="FechaAsistencia" />
                             </HBox>
-                            <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" spacing="20.0">
+                            <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" spacing="20.0" visible="false">
                                 <Button fx:id="btnCrearAsistencia" alignment="CENTER" mnemonicParsing="false" styleClass="boton-crear" text="Crear Asistencia" />
                                 <Button fx:id="btnCancelar" mnemonicParsing="false" styleClass="boton-eliminar" text="Cancelar" />
                             </HBox>
@@ -128,7 +129,33 @@
                             </TableView>
                         </VBox>
                     </AnchorPane>
-                    <AnchorPane fx:id="ProffesorDashboard" layoutY="48.0" prefHeight="700.0" prefWidth="1080.0" stylesheets="@../../Styles/ProfessorView.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                    <AnchorPane fx:id="ProffesorDashboard" layoutY="48.0" prefHeight="700.0" prefWidth="1080.0" stylesheets="@../../Styles/ProfessorView.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <Label layoutX="465.0" layoutY="27.0" text="BIENVENIDO">
+                            <font>
+                                <Font name="Arial Bold" size="24.0" />
+                            </font>
+                        </Label>
+                        <Label layoutX="30.0" layoutY="147.0" text="Asginaturas:">
+                            <font>
+                                <Font name="Arial" size="14.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="cantAsignaturaslbl" layoutX="161.0" layoutY="145.0" text="Cantidad de Asignaturas asignadas">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <Label layoutX="59.0" layoutY="94.0" text="Cursos:">
+                            <font>
+                                <Font name="Arial" size="14.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="cantCursoslbl" layoutX="161.0" layoutY="92.0" text="Cantidad de cursos Asignados">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                    </AnchorPane>
                 </AnchorPane>
             </center>
         </BorderPane>

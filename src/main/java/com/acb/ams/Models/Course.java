@@ -1,60 +1,56 @@
 package com.acb.ams.Models;
 
-import java.util.List;
 
 //Clase referente a Curso
 public class Course {
     
-    private int id;
-    private String name;
-    private List<Student> student;
-    private Curriculum curriculums;
-    
-    public Course(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+    private int curId;
+    private String curGrado;
+    private int penId;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    // Relación con Pensum
+    private Curriculum pensum;
 
 
 
-    public List<Student> getStudent() {
-        return student;
+    public Course(String nombre){
+        this.curGrado = nombre;
     }
 
-    public void setStudent(List<Student> student) {
-        this.student = student;
-    }
-    
-    public Curriculum getCurriculums() {
-        return curriculums;
+    public int getCurId() {
+        return curId;
     }
 
-    public void setCurriculums(Curriculum curriculums) {
-        this.curriculums = curriculums;
+    public void setCurId(int curId) {
+        this.curId = curId;
     }
 
-    @Override
-    public String toString() {
-        return "Course [id=" + id + ", name=" + name + ", student=" + student + ", curriculums=" + curriculums + "]";
+    public String getCurGrado() {
+        return curGrado;
     }
+
+    public void setCurGrado(String curGrado) {
+        this.curGrado = curGrado;
+    }
+
+    public int getPenId() {
+        return penId;
+    }
+
+    public void setPenId(int penId) {
+        this.penId = penId;
+    }
+
+    public Curriculum getPensum() {
+        return pensum;
+    }
+
+    public void setPensum(Curriculum pensum) {
+        this.pensum = pensum;
+    }
+
+    // Constructor, Getters and Setters
 
     
-
 
 }
