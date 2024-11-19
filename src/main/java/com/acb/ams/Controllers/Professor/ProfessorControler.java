@@ -132,6 +132,10 @@ public class ProfessorControler {
     // Dashboard
     @FXML
     private AnchorPane ProffesorDashboard;
+    @FXML
+    public Label cantAsignaturaslbl;
+    @FXML
+    public Label cantCursoslbl;
 
     // Método para inicializar los componentes o establecer la vista inicial
     /**
