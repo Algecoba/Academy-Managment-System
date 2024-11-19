@@ -1,12 +1,7 @@
 
 package com.acb.ams.Models;
 
-import java.lang.classfile.constantpool.DoubleEntry;
-import java.util.Arrays;
-import java.util.List;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.StringProperty;

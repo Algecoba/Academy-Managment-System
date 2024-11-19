@@ -3,13 +3,14 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml">
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.acb.ams.Controllers.Student.StudentController">
     <left>
-       <fx:include source = "StudentMenu.fxml"/>
+        <fx:include source="StudentMenu.fxml"/>
     </left>
-
     <center>
-        <fx:include source = "Dashboard.fxml"/>
+        <AnchorPane>
+            <!-- Aquí puedes añadir componentes que se cargarán dinámicamente en el futuro -->
+        </AnchorPane>
     </center>
-
 </BorderPane>

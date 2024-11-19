@@ -6,8 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
+
 
 import com.acb.ams.Data.DatabaseConnector;
 import com.acb.ams.Views.ViewFactory;
@@ -283,6 +282,37 @@ public class Model {
             return nombre; // Devuelve el mismo valor si es null o vacío
         }
         return nombre.substring(0, 1).toUpperCase() + nombre.substring(1).toLowerCase();
+    }
+
+    public String getTeacherName(String usuario, String asignatura) {
+        String profesor = null;
+        String consulta = "SELECT PER.PER_NOMBRES as nombre " + // Se agrega el espacio
+                "FROM AMS_PERSONAS PER " +
+                "JOIN AMS_PROFESORES_ASIGNATURAS PA ON PER.PER_ID = PA.PRO_ID " +
+                "JOIN AMS_ASIGNATURAS ASI ON PA.ASIG_ID = ASI.ASIG_ID " +
+                "JOIN AMS_ASISTENCIAS ASIS ON ASI.ASIG_ID = ASIS.ASIG_ID " +
+                "JOIN AMS_PERSONAS EST ON ASIS.EST_ID = EST.PER_ID " +
+                "WHERE ASI.ASIG_NOMBRE = ? AND EST.PER_NOMBRES = ?";
+    
+        try (Connection connection = database.getConnection(); // Usa el método estático getConnection
+             PreparedStatement statement = connection.prepareStatement(consulta)) {
+    
+            // Configurar los parámetros de la consulta
+            statement.setString(1, asignatura);
+            statement.setString(2, usuario);
+    
+            // Ejecutar la consulta
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) { // Verificamos si hay resultados
+                    profesor = resultSet.getString("nombre"); // Obtener el nombre del profesor
+                }
+            }
+    
+        } catch (SQLException e) {
+            e.printStackTrace(); // Manejo de excepciones si ocurre algún error en la consulta
+        }
+    
+        return profesor; // Retorna el nombre del profesor o null si no se encuentra
     }
 
 }

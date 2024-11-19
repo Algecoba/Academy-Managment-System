@@ -47,6 +47,7 @@ public class DashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         // Configurar el nombre de usuario, puedes obtenerlo de la sesión o base de datos
         nombre = getNombre();
         saludoNombreTxt.setText("Hola, " + Model.getInstance().capitalize(nombre));  // Cambiar según el usuario
@@ -58,8 +59,7 @@ public class DashboardController implements Initializable {
         if (coursesObservableList != null && !coursesObservableList.isEmpty()) {
             CoursesListView.setItems(coursesObservableList);
             System.out.println(coursesObservableList); 
-            System.out.println("...................");
-            System.out.println(coursesObservableList.toString()); // Asignamos la ObservableList al ListView
+// Asignamos la ObservableList al ListView
         }
 
         // Mostrar los promedios en las etiquetas correspondientes

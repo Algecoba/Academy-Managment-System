@@ -1,30 +1,57 @@
 package com.acb.ams.Controllers.Student;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
-//import javafx.scene.Scene;
 
-public class StudentController {
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-    @FXML
-    private BorderPane borderPane;  // El BorderPane que contiene los fx:include
-
-    @FXML
-    private VBox studentMenu;  // Para referenciar el StudentMenu (si es necesario)
+public class StudentController implements Initializable {
 
     @FXML
-    private VBox dashboard;  // Para referenciar el Dashboard (si es necesario)
+    private BorderPane borderPane; // El BorderPane principal.
 
-    // Método de inicialización
-    @FXML
-    public void initialize() {
-        // Aquí podrías cargar lógicas de inicialización si es necesario, como manejar eventos
-        System.out.println("MainController inicializado correctamente.");
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        System.out.println("StudentController inicializado");
+
+        // Cargar la vista predeterminada (Dashboard)
+        loadDashboard();
     }
 
-    // Si necesitas manipular los elementos, por ejemplo, cambiar el contenido del 'center'
-    public void setDashboardContent(VBox newContent) {
-        borderPane.setCenter(newContent); // Cambia el contenido central dinámicamente
+    /**
+     * Método para cargar una vista específica en el centro del BorderPane.
+     * @param fxmlPath Ruta del archivo FXML a cargar.
+     */
+    private void loadInterface(String fxmlPath) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+
+            // Configurar el controlador hijo (si es necesario)
+            Object controller = loader.getController();
+            if (controller instanceof StudentMenuController) {
+                ((StudentMenuController) controller).setStudentController(this);
+            }
+
+            // Establecer la vista cargada en el centro del BorderPane
+            borderPane.setCenter(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error al cargar la interfaz: " + fxmlPath);
+        }
+    }
+
+    // Métodos para cargar vistas específicas
+    public void loadDashboard() {
+        loadInterface("/com/acb/ams/Views/Dashboard.fxml");
+    }
+
+    public void loadStudentCursos() {
+        loadInterface("/com/acb/ams/Views/StudentCursos.fxml");
     }
 }

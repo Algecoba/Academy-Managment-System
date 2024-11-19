@@ -21,6 +21,7 @@ public class ViewFactory {
         return instance;
     }
 
+    
     /**
      * Método basico para mostrar las ventanas
      * 
@@ -67,6 +68,8 @@ public class ViewFactory {
         showWindow("/Fxml/Admin/Admin.fxml", stage);
     }
 
+    
+
     /**
      * Método para cerrar la ventana (Stage)
      * 
@@ -77,6 +80,7 @@ public class ViewFactory {
             stage.close(); // Cerrar la ventana
         }
     }
+
 
 
 }
