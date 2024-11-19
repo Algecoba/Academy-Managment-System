@@ -5,9 +5,10 @@
 }
 
 /* Estilo para el VBox contenedor */
-.vbox {
+.pane {
     -fx-padding: 20;
     -fx-spacing: 10;
+    -fx-background-color: #ededed;
 }
 
 /* Labels del formulario */
@@ -16,10 +17,16 @@
     -fx-text-fill: #333; /* Gris oscuro para contraste */
 }
 
+.label-titles {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-font-family: Arial;
+}
+
 /* Estilo para TextFields (campos de texto) */
 .text-field {
     -fx-background-color: #ffffff; /* Fondo blanco */
-    -fx-border-color: #cccccc; /* Borde gris claro */
+    -fx-border-color: #afafaf; /* Borde gris claro */
     -fx-border-radius: 5;
     -fx-background-radius: 5;
     -fx-padding: 5 10;
@@ -27,15 +34,20 @@
     -fx-text-fill: #333;
 }
 
+.search-field {
+    -fx-background-color: transparent;
+    -fx-border-color:linear-gradient(to bottom right, #272b3f, #256b51);
+    -fx-border-width: 1px;
+    -fx-padding: 0px 0px 0px 28px;
+}
+
 /* Estilo para ComboBox */
 .combo-box {
     -fx-background-color: #ffffff;
-    -fx-border-color: #cccccc;
-    -fx-border-radius: 5;
-    -fx-background-radius: 5;
-    -fx-padding: 5 10;
-    -fx-font-size: 13px;
+    -fx-font-size: 12px;
     -fx-text-fill: #333;
+    -fx-border-color: #afafaf; /* Borde gris claro */
+    -fx-border-radius: 5;
 }
 
 .combo-box .arrow {
@@ -48,8 +60,7 @@
     -fx-border-color: #cccccc;
     -fx-border-radius: 5;
     -fx-background-radius: 5;
-    -fx-padding: 5 10;
-    -fx-font-size: 13px;
+    -fx-font-size: 11px;
     -fx-text-fill: #333;
 }
 
@@ -63,28 +74,85 @@
 }
 
 /* Estilo para el botón de Guardar */
-.guardarButton {
-    -fx-background-color: #4CAF50; /* Verde */
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-font-size: 14px;
-    -fx-background-radius: 8;
-    -fx-padding: 8 15;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.3, 0, 2); /* Sombra */
+
+.boton-crear {
+    -fx-background-color: #2d5278;
+    -fx-text-fill: #FFFFFF;
 }
 
-/* Estilo para el botón de Cancelar */
-.cancelarButton {
-    -fx-background-color: #F44336; /* Rojo */
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-font-size: 14px;
-    -fx-background-radius: 8;
-    -fx-padding: 8 15;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.3, 0, 2); /* Sombra */
+.boton-crear:hover {
+    -fx-background-color: #2268ae;
+    -fx-text-fill: #FFFFFF;
+}
+
+.boton-actualizar {
+    -fx-background-color: #2d7755;
+    -fx-text-fill: #FFFFFF;
+}
+
+.boton-actualizar:hover {
+    -fx-background-color: #22ad72;
+    -fx-text-fill: #FFFFFF;
+}
+
+.boton-limpiar {
+    -fx-background-color: #6e2275;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-radius: 5;
+}
+
+.boton-limpiar:hover {
+    -fx-background-color: #ae21ac;
+    -fx-text-fill: #FFFFFF;
+}
+
+.boton-eliminar {
+    -fx-background-color: #90242f;
+    -fx-text-fill: #FFFFFF;
+}
+
+.boton-eliminar:hover {
+    -fx-background-color: #c51f32;
+    -fx-text-fill: #FFFFFF;
+}
+
+.boton-guardar {
+    -fx-background-color: #1593e7;
+    -fx-text-fill: #FFFFFF;
+}
+
+.boton-guardar:hover {
+    -fx-background-color: #2c84bf;
+    -fx-text-fill: #FFFFFF;
 }
 
 /* Sombra para los botones */
 .button:hover {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 8, 0.4, 0, 3);
+}
+
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: linear-gradient(to bottom right, #272b3f, #256b51);
+    -fx-border-radius: 5;
+    -fx-padding: 0;
+}
+
+.table-view .table-column{
+    -fx-alignment: CENTER;
+
+}
+
+.table-view .column-header-background {
+    -fx-background-color: linear-gradient(to bottom right, #272b3f, #278f96);
+}
+
+.table-view .column-header, .filter{
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header .label{
+    -fx-text-fill: #fff;
+    -fx-font-family: "Arial";
+    -fx-alignment: Center;
 }

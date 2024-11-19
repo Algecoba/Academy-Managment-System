@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" stylesheets="@../../Styles/AdminMainView.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.acb.ams.Controllers.Student.StudentCursosController">
+    <AnchorPane layoutX="24.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="500.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+        </padding>
+        <Label layoutX="34.0" layoutY="63.0" text="Asigntatura: " />
+        <ComboBox fx:id="asignaturaComboBox" layoutX="114.0" layoutY="59.0" prefWidth="150.0" />
+        <Label layoutX="34.0" layoutY="110.0" text="Profesor: " />
+        <Label fx:id="NombreProfesorTxt" layoutX="114.0" layoutY="110.0" text="Nombre del Profesor ">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Label>
+        <Label layoutX="34.0" layoutY="23.0" text="Tipo:" />
+        <ComboBox fx:id="tipoComboBox" layoutX="114.0" layoutY="20.0" prefWidth="150.0" promptText="Asistencia o Notas" />
+    </AnchorPane>
+    <AnchorPane fx:id="notasStPane" layoutX="14.0" layoutY="220.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="220.0">
+        <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+        </padding>
+        <TableView fx:id="TableNotas" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="736.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <columns>
+                <TableColumn fx:id="colNombre" prefWidth="267.0" text="Nombre Completo" />
+                <TableColumn fx:id="colDefinitiva" prefWidth="68.0" text="Definitiva" />
+                <TableColumn fx:id="colActividadi" prefWidth="97.0" text="Actividad" />
+            </columns>
+        </TableView>
+    </AnchorPane>
+    <AnchorPane fx:id="asistenciasStPane" layoutX="14.0" layoutY="220.0" prefHeight="200.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="220.0">
+        <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+        </padding>
+        <TableView fx:id="TableAsistencias" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="720.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <columns>
+                <TableColumn fx:id="colNombreAsis" prefWidth="289.0" text="Nombre Completo" />
+                <TableColumn fx:id="colPorcentInsasistencias" minWidth="0.0" prefWidth="112.0" text="\%Inasistencia" />
+                <TableColumn fx:id="colPorcentAsistencias" minWidth="0.0" prefWidth="94.0" text="\%Asistencia" />
+            </columns>
+        </TableView>
+    </AnchorPane>
+</AnchorPane>

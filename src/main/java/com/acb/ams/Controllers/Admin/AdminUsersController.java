@@ -2,6 +2,7 @@ package com.acb.ams.Controllers.Admin;
 
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.fxml.FXML;
 
@@ -12,100 +13,79 @@ import com.acb.ams.Models.Model;
 
 public class AdminUsersController implements Initializable {
 
+    public AnchorPane mainPane;
+    //Datos generales de todas las personas
     @FXML
-    private VBox mainContainer;
-
+    public ComboBox estadoComboBox;
     @FXML
     private ComboBox<String> tipoUsuarioComboBox;
-
     @FXML
     private TextField identificacionTxt;
-
     @FXML
     private ComboBox<String> tipoIdTxt; // Renombrado para claridad
-
     @FXML
     private TextField nombresTxt;
-
     @FXML
     private TextField apellidosTxt;
 
+    //Botones CRUD y barra (R)ead
+    @FXML
+    public Button btnEliminar;
+    @FXML
+    public Button btnActualizar;
+    @FXML
+    public Button btnLimpiar;
+    @FXML
+    private Button btnGuardar;
+    public TextField txtBuscar;
+
+    //Sección de Contacto
+    @FXML
+    public ComboBox CiudadesComboBox;
+    @FXML
+    public ComboBox DepartamentosComboBox;
     @FXML
     private TextField direccionTxt;
-
-    @FXML
-    private TextField barrioTxt;
-
-    @FXML
-    private TextField ciudadTxt;
-
     @FXML
     private TextField correoTxt;
-
     @FXML
     private TextField celularTxt;
 
-    @FXML
-    private Button btnGuardar;
-
-    @FXML
-    private Button btnCancelar;
-
-    @FXML
-    private VBox studentBox;
-
+    /*
+    Sección de matricula del estudiante
+    EstudianteCurso la fecha de matricula.
+     */
     @FXML
     private DatePicker fechaMatriculaPicker;
-
     @FXML
     private ComboBox<String> cursoComboBox;
 
-    @FXML
-    private VBox professorBox;
+    //Tabla de visualización y busqueda de personas
+    public AnchorPane visualizacionPane;
+    public TableColumn columIdentificacion;
+    public TableColumn colTipoId;
+    public TableColumn colNombre;
+    public TableColumn colApellidos;
+    public TableColumn colRol;
+    public TableColumn colEstado;
+    public TableColumn colDepartamento;
+    public TableColumn colCiudad;
+    public TableColumn colCelular;
+    public TableColumn colDireccion;
+    public TableColumn colCorreo;
 
-    @FXML
-    private ListView<String> asignaturasListView;
-
-    @FXML
-    private DatePicker fechaContratacionPicker;
-
-    @FXML
-    private VBox acudienteBox;
+    
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Añadir opciones al ComboBox
         tipoUsuarioComboBox.getItems().addAll("Estudiante", "Profesor", "Administrador");
-        tipoIdTxt.getItems().addAll("Tarjeta de Identidad", "Cédula", "Registro civil", "Tarjeta de extranjería");
-
-        // Configurar el evento de cambio de selección
-        tipoUsuarioComboBox.setOnAction(event -> typeUserSelection());
+        tipoIdTxt.getItems().addAll("T.I.", "C.C.", "R.C.", "T.EX.");
 
         // Configurar el botón de guardar
         btnGuardar.setOnAction(event -> btnGuardarAction());
-
-        // Ocultar secciones específicas al iniciar
-        studentBox.setVisible(false);
-        professorBox.setVisible(false);
-        acudienteBox.setVisible(false);
     }
 
-    private void typeUserSelection() {
-        // Obtener el tipo de usuario seleccionado
-        String typeUser = tipoUsuarioComboBox.getValue();
-
-        // Ocultar todas las secciones por defecto
-        studentBox.setVisible(false);
-        professorBox.setVisible(false);
-        acudienteBox.setVisible(false);
-
-        // Mostrar la sección correspondiente al tipo de usuario seleccionado
-        if ("Estudiante".equals(typeUser)) {
-            studentBox.setVisible(true);
-        } else if ("Profesor".equals(typeUser)) {
-            professorBox.setVisible(true);
-        }
-    }
 
     private void btnGuardarAction() {
         try {
@@ -114,23 +94,7 @@ public class AdminUsersController implements Initializable {
                 showAlert("Error", "Por favor, complete todos los campos obligatorios.", Alert.AlertType.ERROR);
                 return;
             }
-
-            // Insertar datos en el modelo
-            Model.getInstance().insertPerson(
-                tipoUsuarioComboBox.getValue(),
-                identificacionTxt.getText(),
-                tipoIdTxt.getValue(),
-                nombresTxt.getText(),
-                apellidosTxt.getText(),
-                direccionTxt.getText(),
-                barrioTxt.getText(),
-                ciudadTxt.getText(),
-                correoTxt.getText(),
-                celularTxt.getText(),
-                fechaMatriculaPicker.getValue(),
-                cursoComboBox.getValue(),
-                fechaContratacionPicker.getValue()
-            );
+            //Insertar datos en el modelo
 
             showAlert("Éxito", "Los datos se han guardado correctamente.", Alert.AlertType.INFORMATION);
 
