@@ -51,12 +51,12 @@ public class Model {
      *         error.
      */
     public boolean verifyUser(String username, String password, String accountType) {
-        String query = "SELECT U.USU_NOMUSUARIO, U.USU_CONTRASENIA, P.PER_TIPO\n" +
+        String query = "SELECT U.USU_NOMUSUARIO, U.USU_CONTRASEÑA, P.PER_TIPO\n" +
                 "FROM AMS_PERSONAS P \n" +
                 "INNER JOIN AMS_USUARIOS U \n" +
                 "ON P.PER_ID = U.PER_ID\n" +
                 "WHERE U.USU_NOMUSUARIO = ? \n" +
-                "  AND U.USU_CONTRASENIA = ? \n" +
+                "  AND U.USU_CONTRASEÑA = ? \n" +
                 "  AND P.PER_TIPO = ?;";
 
         // Abrir conexión y ejecutar consulta
@@ -197,7 +197,6 @@ public class Model {
         }
     }
 
-
     public ObservableList<Course> loadCoursesNames() {
 
         ObservableList<Course> listCourse = FXCollections.observableArrayList();
@@ -216,10 +215,74 @@ public class Model {
 
             return listCourse;
         } catch (Exception e) {
-            
+
             return null;
         }
 
+    }
+
+    public ObservableList<Course> getCourseStudent(String nombre) {
+
+        ObservableList<Course> listCourse = FXCollections.observableArrayList();
+
+        String consulta = "SELECT cur_grado AS Curso " +
+                "FROM ams_cursos AS cur " +
+                "JOIN ams_personas AS per ON cur.cur_id = per.per_id " +
+                "WHERE per.per_nombres = ?";
+
+        try (Connection connection = database.getConnection();
+                PreparedStatement statement = connection.prepareStatement(consulta)) {
+
+            // Sustituir el parámetro
+            statement.setString(1, nombre);
+
+            // Ejecutar la consulta
+            try (ResultSet rs = statement.executeQuery()) {
+
+                // Procesar resultados
+                while (rs.next()) {
+                    String nameCourse = rs.getString("Curso");
+                    Course course = new Course(nameCourse);
+                    listCourse.add(course);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace(); // Registrar el error
+        }
+
+        return listCourse;
+    }
+
+    public String getCodigo() {
+        String codigo = null;
+        String consulta = "SELECT per_nombres AS Nombre " +
+                          "FROM ams_personas AS per " +
+                          "JOIN ams_usuarios AS usu ON per.per_id = usu.per_id " +
+                          "ORDER BY usu.USU_FULTIMOINGRESO DESC " +
+                          "LIMIT 1";
+    
+        try (Connection connection = database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(consulta);
+             ResultSet rs = statement.executeQuery()) {
+    
+            if (rs.next()) {
+                // Obtiene el valor correcto de la columna per_codigo
+                codigo = rs.getString("Nombre");
+            }
+    
+        } catch (Exception e) {
+            e.printStackTrace(); // Registra el error en la consola para depuración
+        }
+    
+        return codigo; // Devuelve el código o null si no hay registros
+    }
+    
+    public String capitalize(String nombre) {
+        if (nombre == null || nombre.isEmpty()) {
+            return nombre; // Devuelve el mismo valor si es null o vacío
+        }
+        return nombre.substring(0, 1).toUpperCase() + nombre.substring(1).toLowerCase();
     }
 
 }

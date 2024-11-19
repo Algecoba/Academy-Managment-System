@@ -49,6 +49,11 @@ public class Course {
         this.pensum = pensum;
     }
 
+    @Override
+    public String toString() {
+        return "Course: " + curGrado;
+    }
+
     // Constructor, Getters and Setters
 
     

@@ -1,11 +1,16 @@
 package com.acb.ams.Controllers.Student;
 
 import com.acb.ams.Models.Course;
+import com.acb.ams.Models.Model;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.text.Text;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
@@ -34,20 +39,26 @@ public class DashboardController implements Initializable {
     @FXML
     private ListView<Course> CoursesListView;
 
-    // Inicialización de la lista de cursos
-    private List<Course> courses;
+    // Usando ObservableList para la lista de cursos
+    private ObservableList<Course> coursesObservableList;
+
+    private String nombre;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Configurar el nombre de usuario, puedes obtenerlo de la sesión o base de datos
-        username.setText("Hola, Alejandro");  // Cambiar según el usuario
-
+        nombre = getNombre();
+        username.setText("Hola, " + Model.getInstance().capitalize(nombre));  // Cambiar según el usuario
+        
         // Inicializar la lista de cursos
-        courses = getCourses(); // Aquí deberías obtener los cursos de la base de datos o de una simulación
+        coursesObservableList = FXCollections.observableArrayList(getCourses()); // Usamos ObservableList
 
         // Si no hay cursos, no agregar nada al ListView
-        if (courses != null && !courses.isEmpty()) {
-            CoursesListView.getItems().addAll(courses);
+        if (coursesObservableList != null && !coursesObservableList.isEmpty()) {
+            CoursesListView.setItems(coursesObservableList);
+            System.out.println(coursesObservableList); 
+            System.out.println("...................");
+            System.out.println(coursesObservableList.toString()); // Asignamos la ObservableList al ListView
         }
 
         // Mostrar los promedios en las etiquetas correspondientes
@@ -62,9 +73,14 @@ public class DashboardController implements Initializable {
         loginDate.setText("Hoy, " + currentDate.toString());
     }
 
-    // Método simulado para obtener cursos
+    // Método para obtener cursos, ya no es simulado
     private List<Course> getCourses() {
         // Aquí deberías obtener la lista de cursos de la base de datos o algún servicio
-        return List.of(); // Retorna una lista vacía para simular que no hay cursos
+        return Model.getInstance().getCourseStudent(nombre);
+         // Traemos los cursos del modelo
+    }
+
+    private String getNombre(){
+        return Model.getInstance().getCodigo(); // Obtenemos el nombre del estudiante o código
     }
 }
