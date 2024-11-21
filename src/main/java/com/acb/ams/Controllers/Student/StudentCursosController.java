@@ -5,6 +5,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import com.acb.ams.Models.*;
 
@@ -41,26 +42,25 @@ public class StudentCursosController {
     private AnchorPane asistenciasStPane;
 
     @FXML
-    private TableView<Object> TableAsistencias;
+    private TableView<Attendance> TableAsistencias;
 
     @FXML
-    private TableColumn<Object, String> colNombreAsis;
+    private TableColumn<Attendance, String> colNombreAsis;
 
     @FXML
-    private TableColumn<Object, Double> colPorcentInsasistencias;
+    private TableColumn<Attendance, String> colPorcentInsasistencias;
 
     @FXML
-    private TableColumn<Object, Double> colPorcentAsistencias;
+    private TableColumn<Attendance, String> colPorcentAsistencias;
 
-    ObservableList<Person> EstudiantesAsignatura = FXCollections.observableArrayList();;
+    ObservableList<Attendance> attendances = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
         // Inicializa el comboBox con opciones.
         tipoComboBox.getItems().addAll("Asistencia", "Notas");
 
-        // Añade un listener para manejar la lógica al cambiar entre "Asistencia" y
-        // "Notas".
+        // Añade un listener para manejar la lógica al cambiar entre "Asistencia" y "Notas".
         tipoComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             if ("Asistencia".equals(newValue)) {
                 asistenciasStPane.setVisible(true);
@@ -70,6 +70,7 @@ public class StudentCursosController {
                 notasStPane.setVisible(true);
             }
         });
+
         // Coloca las asignaturas del estudiante en el combobox
         var modeloBase = Model.getInstance().getDataBase();
         String nombreUsuario = modeloBase.getName();
@@ -79,12 +80,30 @@ public class StudentCursosController {
         // Agregar lógica adicional si es necesario.
         // Colocar nombre del profesor
         this.asignaturaComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-            String asignaturaSeleccionada = newValue.toString();
-            this.NombreProfesorTxt.setText(modeloBase.getTeacherName(nombreUsuario, asignaturaSeleccionada));
-            EstudiantesAsignatura = modeloBase.getEstudiantesAsignaturaProfesor(newValue, modeloBase.getLastUserID());
-            // colNombre
+            if (newValue != null) { // Verifica que se haya seleccionado una asignatura
+                String asignaturaSeleccionada = newValue.toString();
+                this.NombreProfesorTxt
+                        .setText(capitalize(modeloBase.getTeacherName(nombreUsuario, asignaturaSeleccionada)));
+                configureAsistenciasTable(nombreUsuario, asignaturaSeleccionada);
+            }
         });
-
     }
 
+    private void configureAsistenciasTable(String nombre, String asignatura) {
+        // Cargar los datos de asistencias para la tabla
+        attendances = Model.getInstance().getDataBase().getAttendancesForTableCourses(nombre, asignatura);
+        TableAsistencias.setItems(attendances);
+
+        // Configurar las columnas de la tabla
+        this.colNombreAsis.setCellValueFactory(new PropertyValueFactory<>("asignatura"));
+        this.colPorcentAsistencias.setCellValueFactory(new PropertyValueFactory<>("PorcentAsistencias"));
+        this.colPorcentInsasistencias.setCellValueFactory(new PropertyValueFactory<>("PorcentInsasistencias"));
+    }
+
+    public String capitalize(String nombre) {
+        if (nombre == null || nombre.isEmpty()) {
+            return nombre; // Devuelve el mismo valor si es null o vacío
+        }
+        return nombre.substring(0, 1).toUpperCase() + nombre.substring(1).toLowerCase();
+    }
 }

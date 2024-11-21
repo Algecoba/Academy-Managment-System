@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 import com.acb.ams.Models.Model;
 import com.acb.ams.Models.Qualification;
 import com.acb.ams.Models.Subject;
-import com.acb.ams.Models.Activities; // Asegúrate de importar Activities
+import com.acb.ams.Models.Activities;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -44,26 +44,24 @@ public class DashboardController {
     private Label loginDate;
 
     @FXML
-    private TableView<Activities> actividadesTable; // Cambiado para trabajar con Activities
+    private TableView<Activities> actividadesTable;
 
     @FXML
-    private TableColumn colAsignatura;
+    private TableColumn<Activities, String> colAsignatura;
 
     @FXML
-    private TableColumn colActividad;
+    private TableColumn<Activities, String> colActividad;
 
     @FXML
-    private TableColumn colFecha;
+    private TableColumn<Activities, String> colFecha;
 
     @FXML
-    private TableColumn colNota;
+    private TableColumn<Activities, Double> colNota;
 
     @FXML
-    private TableColumn colCriterio;
+    private TableColumn<Activities, String> colCriterio;
 
-
-    ObservableList <Activities >activities;
-
+    private ObservableList<Activities> activities;
 
     @FXML
     public void initialize() {
@@ -74,53 +72,53 @@ public class DashboardController {
         saludoNombreTxt.setText("Hola, " + capitalize(nombre));
 
         // Configurar la lista de cursos
-
         CoursesListView.setItems(Model.getInstance().getDataBase().getSubjectStudent(nombre));
 
         // Configurar los promedios
-        Qualification[] averages = Model.getInstance().getDataBase().getAveranges(nombre);
-        promedio1lbl.setText("" + averages[0].toString());
-        promedio2lbl.setText("" + averages[1].toString());
-        promedio3lbl.setText("" + averages[2].toString());
-        promedio4lbl.setText("" + averages[3].toString());
+        setPromedios(Model.getInstance().getDataBase().getAveranges(nombre));
 
-        // Configurar columnas de la tabla (asociar las columnas con los datos
-        // correctos)
+        // Configurar la tabla de actividades
+        configureActivitiesTable(nombre);
+    }
+
+    private void setPromedios(Qualification[] averages) {
+        if (averages != null && averages.length == 4) {
+            promedio1lbl.setText(averages[0].toString());
+            promedio2lbl.setText(averages[1].toString());
+            promedio3lbl.setText(averages[2].toString());
+            promedio4lbl.setText(averages[3].toString());
+        } else {
+            // Manejo de casos en los que los promedios no estén disponibles
+            promedio1lbl.setText("N/A");
+            promedio2lbl.setText("N/A");
+            promedio3lbl.setText("N/A");
+            promedio4lbl.setText("N/A");
+        }
+    }
+
+    private void configureActivitiesTable(String nombre) {
         activities = Model.getInstance().getDataBase().getActivitiesForTableDashboard(nombre);
+        if (activities != null) {
+            actividadesTable.setItems(activities);
+        }
 
-        actividadesTable.setItems(activities);
-
-        this.colAsignatura.setCellValueFactory(new PropertyValueFactory("asignatura"));
-        this.colActividad.setCellValueFactory(new PropertyValueFactory("actNombre"));
-        this.colFecha.setCellValueFactory(new PropertyValueFactory("actFecha"));
-        this.colNota.setCellValueFactory(new PropertyValueFactory("actNota"));
-        this.colCriterio.setCellValueFactory(new PropertyValueFactory("criterio"));
-        
-
+        // Configurar columnas de la tabla usando lambdas
+        colAsignatura.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAsignatura()));
+        colActividad.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getActNombre()));
+        colFecha.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getActFecha().toString()));
+        colNota.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getActNota()));
+        colCriterio.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCriterio()));
     }
-
-    public void cargarDatos(){
-        
-    }
-   
-    
 
     public String capitalize(String nombre) {
-        String name = nombre;
-        if (name == null || nombre.isEmpty()) {
-            return name; // Devuelve el mismo valor si es null o vacío
+        if (nombre == null || nombre.isEmpty()) {
+            return nombre;
         }
-        return name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+        return nombre.substring(0, 1).toUpperCase() + nombre.substring(1).toLowerCase();
     }
 
     public String fechaActual() {
-        // Configurar la fecha y hora actuales
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        String currentDateTime = LocalDateTime.now().format(formatter);
-        return currentDateTime;
-    }
-
-    public void dashboardControllerInstancia() {
-        // Método vacío, puedes implementarlo si es necesario
+        return LocalDateTime.now().format(formatter);
     }
 }

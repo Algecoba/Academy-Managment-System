@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.acb.ams.Models.Activities;
+import com.acb.ams.Models.Attendance;
 import com.acb.ams.Models.Course;
 import com.acb.ams.Models.Criterion;
 import com.acb.ams.Models.Person;
@@ -91,58 +92,6 @@ public class DatabaseConnector {
             System.err.println("Error al verificar el usuario: " + e.getMessage());
             return false; // Retorna false si ocurre algún error
         }
-    }
-
-    public ObservableList<Activities> getActivitiesForTableDashboard(String nombre) {
-        String query = """
-                SELECT
-                    asig.asig_nombre AS asignatura, 
-                    act.act_nombre AS actividad,
-                    act.act_fecha AS fecha_actividad,
-                    act.act_nota AS nota,
-                    crit.crit_nombre AS criterio
-                FROM ams_personas per
-                JOIN ams_cursos cur ON per.cur_id = cur.cur_id
-                JOIN ams_pensum pen ON cur.pen_id = pen.pen_id
-                JOIN ams_asignaturas asig ON pen.pen_id = asig.pen_id
-                JOIN ams_actividades act ON asig.asig_id = act.asig_id
-                JOIN ams_criterios crit ON act.crit_id = crit.crit_id
-                JOIN ams_notas nots ON act.asig_id = nots.asig_id AND nots.est_id = per.per_id
-                WHERE per.per_nombres = ?;
-                """;
-
-        ObservableList<Activities> activities = FXCollections.observableArrayList();
-
-        try (Connection connection = getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
-            // Establecer el parámetro de la consulta
-            preparedStatement.setString(1, nombre);
-
-            // Ejecutar la consulta
-            ResultSet rs = preparedStatement.executeQuery();
-
-            System.out.println("Consulta hecha exitosamente - Estudiantes de un curso");
-
-            // Recorrer los resultados
-            while (rs.next()) {
-                String asignatura = rs.getString("asignatura");
-                String actividad = rs.getString("actividad");
-                Date fechaActividad = rs.getDate("fecha_actividad");
-                Double nota = rs.getDouble("nota");
-                String criterio = rs.getString("criterio");
-
-                Activities acti = new Activities(asignatura, actividad, fechaActividad, nota, criterio);
-
-
-                // Agregar la actividad a la lista
-                activities.add(acti);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace(); // Registrar el error
-        }
-
-        return activities; // Siempre devuelve la lista, aunque esté vacía
     }
 
     // Consultas para Admin
@@ -288,7 +237,110 @@ public class DatabaseConnector {
 
     }
 
-    // Consultas Para Estudiantes
+    // Consultas Para Estudiante
+    public ObservableList<Attendance> getAttendancesForTableCourses(String student, String asignatura){
+        String consulta = """
+            SELECT 
+                A.ASIG_NOMBRE AS Asignatura,
+                ROUND(SUM(CASE WHEN ASIS.ASIS_ESTADO = 'Presente' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS Porcentaje_Asistencia,
+                ROUND(SUM(CASE WHEN ASIS.ASIS_ESTADO = 'Ausente' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS Porcentaje_Inasistencia
+            FROM 
+                AMS_PERSONAS AS P_ESTU
+            JOIN 
+                AMS_ASISTENCIAS AS ASIS ON P_ESTU.PER_ID = ASIS.EST_ID
+            JOIN 
+                AMS_ASIGNATURAS AS A ON ASIS.ASIG_ID = A.ASIG_ID
+            WHERE 
+                P_ESTU.PER_NOMBRES = ?
+                AND A.ASIG_NOMBRE = ?
+            GROUP BY 
+                A.ASIG_NOMBRE;
+        """;
+
+        ObservableList<Attendance> attendances = FXCollections.observableArrayList(); 
+
+        try (Connection connection = getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(consulta)) {
+
+            // Establecer el parámetro de la consulta
+            preparedStatement.setString(1, student);
+            preparedStatement.setString(2, asignatura);
+
+            // Ejecutar la consulta
+            ResultSet rs = preparedStatement.executeQuery();
+
+            System.out.println("Consulta hecha exitosamente - Asistencias de un curso");
+
+            // Recorrer los resultados
+            while (rs.next()) {
+                String asig = rs.getString("Asignatura");
+                Subject subject = new Subject(asig);
+                Double porcentAsistencia = rs.getDouble("Porcentaje_Asistencia");
+                Double porcentInasistencia = rs.getDouble("Porcentaje_Inasistencia");
+
+                Attendance attendance = new Attendance(subject, porcentAsistencia, porcentInasistencia);
+
+                // Agregar la actividad a la lista
+                attendances.add(attendance);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Registrar el error
+        }
+
+        return attendances;
+    }
+
+    public ObservableList<Activities> getActivitiesForTableDashboard(String nombre) {
+        String query = """
+                SELECT
+                    asig.asig_nombre AS asignatura,
+                    act.act_nombre AS actividad,
+                    act.act_fecha AS fecha_actividad,
+                    act.act_nota AS nota,
+                    crit.crit_nombre AS criterio
+                FROM ams_personas per
+                JOIN ams_cursos cur ON per.cur_id = cur.cur_id
+                JOIN ams_pensum pen ON cur.pen_id = pen.pen_id
+                JOIN ams_asignaturas asig ON pen.pen_id = asig.pen_id
+                JOIN ams_actividades act ON asig.asig_id = act.asig_id
+                JOIN ams_criterios crit ON act.crit_id = crit.crit_id
+                JOIN ams_notas nots ON act.asig_id = nots.asig_id AND nots.est_id = per.per_id
+                WHERE per.per_nombres = ?;
+                """;
+
+        ObservableList<Activities> activities = FXCollections.observableArrayList();
+
+        try (Connection connection = getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            // Establecer el parámetro de la consulta
+            preparedStatement.setString(1, nombre);
+
+            // Ejecutar la consulta
+            ResultSet rs = preparedStatement.executeQuery();
+
+            System.out.println("Consulta hecha exitosamente - Estudiantes de un curso");
+
+            // Recorrer los resultados
+            while (rs.next()) {
+                String asignatura = rs.getString("asignatura");
+                String actividad = rs.getString("actividad");
+                Date fechaActividad = rs.getDate("fecha_actividad");
+                Double nota = rs.getDouble("nota");
+                String criterio = rs.getString("criterio");
+
+                Activities acti = new Activities(asignatura, actividad, fechaActividad, nota, criterio);
+
+                // Agregar la actividad a la lista
+                activities.add(acti);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Registrar el error
+        }
+
+        return activities; // Siempre devuelve la lista, aunque esté vacía
+    }
+
     public ObservableList<Course> getCourseStudent(String nombre) {
 
         ObservableList<Course> listCourse = FXCollections.observableArrayList();
@@ -324,25 +376,35 @@ public class DatabaseConnector {
 
     public String getTeacherName(String usuario, String asignatura) {
         String profesor = null;
-        String consulta = "SELECT PER.PER_NOMBRES as nombre " + // Se agrega el espacio
-                "FROM AMS_PERSONAS PER " +
-                "JOIN AMS_PROFESORES_ASIGNATURAS PA ON PER.PER_ID = PA.PRO_ID " +
-                "JOIN AMS_ASIGNATURAS ASI ON PA.ASIG_ID = ASI.ASIG_ID " +
-                "JOIN AMS_ASISTENCIAS ASIS ON ASI.ASIG_ID = ASIS.ASIG_ID " +
-                "JOIN AMS_PERSONAS EST ON ASIS.EST_ID = EST.PER_ID " +
-                "WHERE ASI.ASIG_NOMBRE = ? AND EST.PER_NOMBRES = ?";
+        String consulta = """
+                    SELECT
+                        P_PROF.PER_NOMBRES AS Profesor_Nombre
+                    FROM
+                        AMS_PERSONAS AS P_ESTU
+                    JOIN
+                        AMS_NOTAS AS N ON P_ESTU.PER_ID = N.EST_ID
+                    JOIN
+                        AMS_ASIGNATURAS AS A ON N.ASIG_ID = A.ASIG_ID
+                    JOIN
+                        AMS_PROFESORES_ASIGNATURAS AS PA ON A.ASIG_ID = PA.ASIG_ID
+                    JOIN
+                        AMS_PERSONAS AS P_PROF ON PA.PRO_ID = P_PROF.PER_ID
+                    WHERE
+                        P_ESTU.PER_NOMBRES = ?
+                        AND A.ASIG_NOMBRE = ?;
+                """;
 
         try (Connection connection = getConnection(); // Usa el método estático getConnection
                 PreparedStatement statement = connection.prepareStatement(consulta)) {
 
             // Configurar los parámetros de la consulta
-            statement.setString(1, asignatura);
-            statement.setString(2, usuario);
+            statement.setString(1, usuario);
+            statement.setString(2, asignatura);
 
             // Ejecutar la consulta
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) { // Verificamos si hay resultados
-                    profesor = resultSet.getString("nombre"); // Obtener el nombre del profesor
+                    profesor = resultSet.getString("Profesor_Nombre"); // Obtener el nombre del profesor
                 }
             }
 
@@ -458,7 +520,7 @@ public class DatabaseConnector {
      */
     public String getLastUserID() {
         String ID = null;
-        String consulta = "SELECT per_id AS ID " +
+        String consulta = "SELECT per.per_id AS ID " +
                 "FROM ams_personas AS per " +
                 "JOIN ams_usuarios AS usu ON per.per_id = usu.per_id " +
                 "ORDER BY usu.USU_FULTIMOINGRESO DESC " +
@@ -481,43 +543,54 @@ public class DatabaseConnector {
 
     public ObservableList<Person> getEstudiantesAsignaturaProfesor(Subject asign, String profe) {
         String query = """
-                SELECT PER_ID AS ID, PER_NOMBRES AS NOMBRES,
-                PER_APELLIDOS AS APELLIDOS, PER_CODIGO AS CODIGO, CUR_ID AS CURSO
+                SELECT PE.PER_ID AS ID, PE.PER_NOMBRES AS NOMBRES,
+                PE.PER_APELLIDOS AS APELLIDOS, PE.PER_CODIGO AS CODIGO, CUR.CUR_ID AS CURSO
                 FROM AMS_PERSONAS AS PE
                 JOIN AMS_CURSOS AS CUR ON PE.CUR_ID = CUR.CUR_ID
                 JOIN AMS_PENSUM AS PEN ON PEN.PEN_ID = CUR.PEN_ID
                 JOIN AMS_ASIGNATURAS AS ASI ON ASI.PEN_ID = PEN.PEN_ID
-                JOIN AMS_PROFESORES_ASIGNATURAS AS PAS ON PAS.ASIG_ID == ASI.ASIG_ID
+                JOIN AMS_PROFESORES_ASIGNATURAS AS PAS ON PAS.ASIG_ID = ASI.ASIG_ID
                 WHERE PAS.PRO_ID = ?
                 AND PAS.ASIG_ID = ?
                 """;
 
-        ObservableList<Person> criterions = FXCollections.observableArrayList();
+        ObservableList<Person> students = FXCollections.observableArrayList();
 
         try (Connection connection = getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            // Establecer el parámetro de la consulta
-            preparedStatement.setString(1, profe);
-            preparedStatement.setString(2, asign.getId() + "");
+
+            // Configurar los parámetros de la consulta
+            preparedStatement.setString(1, profe); // Asume que el ID del profesor es String
+            preparedStatement.setInt(2, asign.getId()); // Convierte a entero si es necesario
+
             // Ejecutar la consulta
             ResultSet rs = preparedStatement.executeQuery();
+            System.out.println("Consulta realizada exitosamente: Estudiantes de un curso.");
 
-            System.out.println("Consulta hecha exitosamente - Estudiantes de un curso");
-
-            // Recorrer los resultados
+            // Procesar los resultados
             while (rs.next()) {
                 String nombres = rs.getString("NOMBRES");
                 String apellidos = rs.getString("APELLIDOS");
-                Integer ID = rs.getInt("ID");
-                Integer cursoID = rs.getInt("CURSO");
-                Person subject = new Person(nombres, apellidos, ID, cursoID); // Constructor correcto
-                criterions.add(subject);
+                int ID = rs.getInt("ID");
+                int cursoID = rs.getInt("CURSO");
+
+                // Crear y agregar un objeto Person a la lista
+                Person student = new Person(nombres, apellidos, ID, cursoID);
+                students.add(student);
             }
+
+        } catch (NumberFormatException e) {
+            System.err.println("Error al convertir el ID de asignatura a número: " + asign.getId());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            System.err.println("Error al ejecutar la consulta SQL.");
+            e.printStackTrace();
         } catch (Exception e) {
-            e.printStackTrace(); // Registrar el error
+            System.err.println("Ocurrió un error inesperado.");
+            e.printStackTrace();
         }
 
-        return criterions; // Siempre devuelve la lista, aunque esté vacía
+        return students; // Devuelve la lista (puede estar vacía)
     }
 
     public String capitalize(String nombre) {
