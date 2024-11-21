@@ -96,87 +96,123 @@ public class DatabaseConnector {
 
     // Consultas para Admin
     public void insertPerson(
-        String tipoUsuarioComboBox,
-        String identificacionTxt,
-        String nombresTxt,
-        String apellidosTxt,
-        String estado) {
+            String tipoUsuarioComboBox,
+            String identificacionTxt,
+            String nombresTxt,
+            String apellidosTxt,
+            String estado) {
 
-    String insertPersonSQL = """
-        INSERT INTO AMS_PERSONAS (PER_TIPO, PER_CODIGO, PER_NOMBRES, PER_APELLIDOS, PER_ESTADO) 
-        VALUES (?, ?, ?, ?, ?);
-    """;
+        String insertPersonSQL = """
+                    INSERT INTO AMS_PERSONAS (PER_TIPO, PER_CODIGO, PER_NOMBRES, PER_APELLIDOS, PER_ESTADO)
+                    VALUES (?, ?, ?, ?, ?);
+                """;
 
-    Connection conn = null;
-    PreparedStatement insertPersonStmt = null;
+        Connection conn = null;
+        PreparedStatement insertPersonStmt = null;
 
-    try {
-        conn = getConnection();
+        try {
+            conn = getConnection();
 
-        if (conn == null) {
-            throw new SQLException("No se pudo obtener la conexión a la base de datos.");
-        }
-
-        conn.setAutoCommit(false); // Inicia una transacción
-
-        // Preparar la consulta
-        insertPersonStmt = conn.prepareStatement(insertPersonSQL, Statement.RETURN_GENERATED_KEYS);
-
-        // Establecer los valores en el PreparedStatement
-        insertPersonStmt.setString(1, tipoUsuarioComboBox);
-        insertPersonStmt.setString(2, identificacionTxt);
-        insertPersonStmt.setString(3, nombresTxt);
-        insertPersonStmt.setString(4, apellidosTxt);
-        insertPersonStmt.setString(5, estado);
-
-        // Ejecutar la consulta
-        int rowsAffected = insertPersonStmt.executeUpdate();
-
-        if (rowsAffected == 0) {
-            throw new SQLException("No se insertó ninguna fila en la tabla AMS_PERSONAS.");
-        }
-
-        // Obtener el ID generado automáticamente
-        try (ResultSet generatedKeys = insertPersonStmt.getGeneratedKeys()) {
-            if (generatedKeys.next()) {
-                int personId = generatedKeys.getInt(1);
-                System.out.println("Persona insertada con ID: " + personId);
-            } else {
-                throw new SQLException("No se pudo obtener el ID generado para la persona.");
+            if (conn == null) {
+                throw new SQLException("No se pudo obtener la conexión a la base de datos.");
             }
-        }
 
-        // Confirmar la transacción
-        conn.commit();
-    } catch (SQLException e) {
-        // Revertir la transacción en caso de error
-        if (conn != null) {
-            try {
-                conn.rollback();
-            } catch (SQLException rollbackEx) {
-                rollbackEx.printStackTrace();
+            conn.setAutoCommit(false); // Inicia una transacción
+
+            // Preparar la consulta
+            insertPersonStmt = conn.prepareStatement(insertPersonSQL, Statement.RETURN_GENERATED_KEYS);
+
+            // Establecer los valores en el PreparedStatement
+            insertPersonStmt.setString(1, tipoUsuarioComboBox);
+            insertPersonStmt.setString(2, identificacionTxt);
+            insertPersonStmt.setString(3, nombresTxt);
+            insertPersonStmt.setString(4, apellidosTxt);
+            insertPersonStmt.setString(5, estado);
+
+            // Ejecutar la consulta
+            int rowsAffected = insertPersonStmt.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new SQLException("No se insertó ninguna fila en la tabla AMS_PERSONAS.");
             }
-        }
-        e.printStackTrace();
-    } finally {
-        // Cerrar recursos
-        if (insertPersonStmt != null) {
-            try {
-                insertPersonStmt.close();
-            } catch (SQLException closeEx) {
-                closeEx.printStackTrace();
+
+            // Obtener el ID generado automáticamente
+            try (ResultSet generatedKeys = insertPersonStmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int personId = generatedKeys.getInt(1);
+                    System.out.println("Persona insertada con ID: " + personId);
+                } else {
+                    throw new SQLException("No se pudo obtener el ID generado para la persona.");
+                }
             }
-        }
-        if (conn != null) {
-            try {
-                conn.close();
-            } catch (SQLException closeEx) {
-                closeEx.printStackTrace();
+
+            // Confirmar la transacción
+            conn.commit();
+        } catch (SQLException e) {
+            // Revertir la transacción en caso de error
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException rollbackEx) {
+                    rollbackEx.printStackTrace();
+                }
+            }
+            e.printStackTrace();
+        } finally {
+            // Cerrar recursos
+            if (insertPersonStmt != null) {
+                try {
+                    insertPersonStmt.close();
+                } catch (SQLException closeEx) {
+                    closeEx.printStackTrace();
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException closeEx) {
+                    closeEx.printStackTrace();
+                }
             }
         }
     }
-}
 
+    public ObservableList<Person> getPersonForTable() {
+        ObservableList<Person> person = FXCollections.observableArrayList();
+        String consulta = """
+                    SELECT
+                        PER_CODIGO AS Identificacion,
+                        PER_TIPO AS Tipo_Identificacion,
+                        PER_NOMBRES AS Nombres,
+                        PER_APELLIDOS AS Apellidos,
+                        PER_ESTADO AS Estado,
+                        CASE
+                            WHEN PER_ID IN (SELECT DISTINCT PRO_ID FROM AMS_PROFESORES_ASIGNATURAS) THEN 'Profesor'
+                            WHEN PER_ID IN (SELECT DISTINCT EST_ID FROM AMS_NOTAS) THEN 'Estudiante'
+                            ELSE 'Otro'
+                        END AS Rol
+                    FROM
+                        AMS_PERSONAS;
+                """;
+
+        try (Connection connection = getConnection();
+                PreparedStatement statement = connection.prepareStatement(consulta);
+                ResultSet rs = statement.executeQuery()) {
+                    if (rs.next()) {
+                        int codigo = rs.getInt("Identificacion");
+                        String tipoIdentificacion = rs.getString("Tipo_Identificacion");
+                        String nombres = rs.getString("Nombres");
+                        String apellidos = rs.getString("Apellidos");
+                        String estado = rs.getString("Estado");
+                        String rol = rs.getString("Rol");
+                        Person pers = new Person(codigo, tipoIdentificacion, nombres, apellidos, estado, rol);
+                        person.add(pers);
+                    }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return person;
+    }
 
     // Consultas para Profesores
     public ObservableList<Person> dataForTableActividades() {
@@ -239,26 +275,26 @@ public class DatabaseConnector {
     }
 
     // Consultas Para Estudiante
-    public ObservableList<Attendance> getAttendancesForTableCourses(String student, String asignatura){
+    public ObservableList<Attendance> getAttendancesForTableCourses(String student, String asignatura) {
         String consulta = """
-            SELECT 
-                A.ASIG_NOMBRE AS Asignatura,
-                ROUND(SUM(CASE WHEN ASIS.ASIS_ESTADO = 'Presente' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS Porcentaje_Asistencia,
-                ROUND(SUM(CASE WHEN ASIS.ASIS_ESTADO = 'Ausente' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS Porcentaje_Inasistencia
-            FROM 
-                AMS_PERSONAS AS P_ESTU
-            JOIN 
-                AMS_ASISTENCIAS AS ASIS ON P_ESTU.PER_ID = ASIS.EST_ID
-            JOIN 
-                AMS_ASIGNATURAS AS A ON ASIS.ASIG_ID = A.ASIG_ID
-            WHERE 
-                P_ESTU.PER_NOMBRES = ?
-                AND A.ASIG_NOMBRE = ?
-            GROUP BY 
-                A.ASIG_NOMBRE;
-        """;
+                    SELECT
+                        A.ASIG_NOMBRE AS Asignatura,
+                        ROUND(SUM(CASE WHEN ASIS.ASIS_ESTADO = 'Presente' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS Porcentaje_Asistencia,
+                        ROUND(SUM(CASE WHEN ASIS.ASIS_ESTADO = 'Ausente' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS Porcentaje_Inasistencia
+                    FROM
+                        AMS_PERSONAS AS P_ESTU
+                    JOIN
+                        AMS_ASISTENCIAS AS ASIS ON P_ESTU.PER_ID = ASIS.EST_ID
+                    JOIN
+                        AMS_ASIGNATURAS AS A ON ASIS.ASIG_ID = A.ASIG_ID
+                    WHERE
+                        P_ESTU.PER_NOMBRES = ?
+                        AND A.ASIG_NOMBRE = ?
+                    GROUP BY
+                        A.ASIG_NOMBRE;
+                """;
 
-        ObservableList<Attendance> attendances = FXCollections.observableArrayList(); 
+        ObservableList<Attendance> attendances = FXCollections.observableArrayList();
 
         try (Connection connection = getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(consulta)) {

@@ -62,16 +62,29 @@ public class AdminUsersController implements Initializable {
 
     // Tabla de visualización y busqueda de personas
     public AnchorPane visualizacionPane;
+    @FXML
+    private TableView TablePerson;
+    @FXML
     public TableColumn columIdentificacion;
+    @FXML
     public TableColumn colTipoId;
+    @FXML
     public TableColumn colNombre;
+    @FXML
     public TableColumn colApellidos;
+    @FXML
     public TableColumn colRol;
+    @FXML
     public TableColumn colEstado;
+    @FXML
     public TableColumn colDepartamento;
+    @FXML
     public TableColumn colCiudad;
+    @FXML
     public TableColumn colCelular;
+    @FXML
     public TableColumn colDireccion;
+    @FXML
     public TableColumn colCorreo;
 
     @Override

@@ -1,6 +1,8 @@
 
 package com.acb.ams.Models;
 
+import java.lang.classfile.constantpool.DoubleEntry;
+
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.StringProperty;
@@ -15,14 +17,14 @@ public class Person {
     private int perId;
     private String perEmail;
     private Integer perCodigo;
-    private final StringProperty perNombres;
-    private StringProperty perApellidos;
+    private String perNombres;
+    private String perApellidos;
     private String perEstado;
     private String perTipo;
     private Integer acudId1;
     private Integer acudId2;
     private Integer curId;
-
+    private String tipoIdent;
     // Getters and setters
 
     // Relación con Acudientes
@@ -36,24 +38,32 @@ public class Person {
     private User user;
 
     // private List<Activities> actividades;
-    private final StringProperty activitie;
-    private final DoubleProperty qualification;
+    private String activitie;
+    private double qualification;
 
     public Person(String perNombres, String activitie, double qualification) {
-        this.perNombres = new SimpleStringProperty(perNombres);
-        this.activitie = new SimpleStringProperty(activitie);
-        this.qualification = new SimpleDoubleProperty(qualification);
+        this.perNombres = perNombres;
+        this.activitie = activitie;
+        this.qualification = qualification;
     }
 
     // El constructor instancia como nulo las propiedades finales porque no sabia
     // que hacian
+
+    public Person(int codigo, String tipoIdent, String nombres, String apellidos, String estado, String rol){
+        this.perCodigo = codigo;
+        this.tipoIdent = tipoIdent;
+        this.perNombres = nombres;
+        this.perApellidos = apellidos;
+        this.perEstado = estado;
+        this.perTipo = rol;
+    }
+
     public Person(String Nombres, String Apellidos, Integer CursoID, Integer ID) {
-        this.perNombres = new SimpleStringProperty(Nombres);
-        this.perApellidos = new SimpleStringProperty(Apellidos);
+        this.perNombres = Nombres;
+        this.perApellidos = Apellidos;
         this.curId = CursoID;
         this.perId = ID;
-        this.activitie = null;
-        this.qualification = null;
     }
 
     public int getPerId() {
@@ -80,32 +90,46 @@ public class Person {
         this.perCodigo = perCodigo;
     }
 
+    
+
     public String getPerNombres() {
-        return perNombres.get();
+        return perNombres;
     }
 
     public void setPerNombres(String perNombres) {
-        this.perNombres.set(perNombres);
+        this.perNombres = perNombres;
     }
 
-    public StringProperty getPerApellidos() {
+    public String getPerApellidos() {
         return perApellidos;
     }
 
-    public void setPerApellidos(StringProperty perApellidos) {
+    public void setPerApellidos(String perApellidos) {
         this.perApellidos = perApellidos;
     }
 
+    public String getTipoIdent() {
+        return tipoIdent;
+    }
+
+    public void setTipoIdent(String tipoIdent) {
+        this.tipoIdent = tipoIdent;
+    }
+
     public String getActivitie() {
-        return activitie.get();
+        return activitie;
     }
 
     public void setActivitie(String activitie) {
-        this.activitie.set(activitie);
+        this.activitie = activitie;
     }
 
-    public Double getQualification() {
-        return qualification.get();
+    public double getQualification() {
+        return qualification;
+    }
+
+    public void setQualification(double qualification) {
+        this.qualification = qualification;
     }
 
     public String getPerEstado() {
