@@ -6,12 +6,18 @@ import java.time.format.DateTimeFormatter;
 import com.acb.ams.Models.Model;
 import com.acb.ams.Models.Qualification;
 import com.acb.ams.Models.Subject;
+import com.acb.ams.Models.Activities; // Asegúrate de importar Activities
 
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
 public class DashboardController {
@@ -38,19 +44,26 @@ public class DashboardController {
     private Label loginDate;
 
     @FXML
-    private TableView<?> actividadesTable;
+    private TableView<Activities> actividadesTable; // Cambiado para trabajar con Activities
 
     @FXML
-    private TableColumn<?, ?> colAsignatura;
+    private TableColumn colAsignatura;
 
     @FXML
-    private TableColumn<?, ?> colActividad;
+    private TableColumn colActividad;
 
     @FXML
-    private TableColumn<?, ?> colFecha;
+    private TableColumn colFecha;
 
     @FXML
-    private TableColumn<?, ?> colNota;
+    private TableColumn colNota;
+
+    @FXML
+    private TableColumn colCriterio;
+
+
+    ObservableList <Activities >activities;
+
 
     @FXML
     public void initialize() {
@@ -61,8 +74,8 @@ public class DashboardController {
         saludoNombreTxt.setText("Hola, " + capitalize(nombre));
 
         // Configurar la lista de cursos
+
         CoursesListView.setItems(Model.getInstance().getDataBase().getSubjectStudent(nombre));
-        ;
 
         // Configurar los promedios
         Qualification[] averages = Model.getInstance().getDataBase().getAveranges(nombre);
@@ -71,16 +84,26 @@ public class DashboardController {
         promedio3lbl.setText("" + averages[2].toString());
         promedio4lbl.setText("" + averages[3].toString());
 
-        // Configurar columnas de la tabla (puedes personalizar los valores en función
-        // de tu modelo de datos)
-        colAsignatura.setText("Asignatura");
-        colActividad.setText("Actividad");
-        colFecha.setText("Fecha");
-        colNota.setText("Nota");
+        // Configurar columnas de la tabla (asociar las columnas con los datos
+        // correctos)
+        activities = Model.getInstance().getDataBase().getActivitiesForTableDashboard(nombre);
 
-        // Aquí podrías cargar datos en la tabla
-        // actividadesTable.setItems(...);
+        actividadesTable.setItems(activities);
+
+        this.colAsignatura.setCellValueFactory(new PropertyValueFactory("asignatura"));
+        this.colActividad.setCellValueFactory(new PropertyValueFactory("actNombre"));
+        this.colFecha.setCellValueFactory(new PropertyValueFactory("actFecha"));
+        this.colNota.setCellValueFactory(new PropertyValueFactory("actNota"));
+        this.colCriterio.setCellValueFactory(new PropertyValueFactory("criterio"));
+        
+
     }
+
+    public void cargarDatos(){
+        
+    }
+   
+    
 
     public String capitalize(String nombre) {
         String name = nombre;
@@ -95,10 +118,9 @@ public class DashboardController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         String currentDateTime = LocalDateTime.now().format(formatter);
         return currentDateTime;
-
     }
 
     public void dashboardControllerInstancia() {
-
+        // Método vacío, puedes implementarlo si es necesario
     }
 }

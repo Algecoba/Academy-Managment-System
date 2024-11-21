@@ -82,7 +82,7 @@ public class StudentCursosController {
             String asignaturaSeleccionada = newValue.toString();
             this.NombreProfesorTxt.setText(modeloBase.getTeacherName(nombreUsuario, asignaturaSeleccionada));
             EstudiantesAsignatura = modeloBase.getEstudiantesAsignaturaProfesor(newValue, modeloBase.getLastUserID());
-            colNombre.set
+            // colNombre
         });
 
     }

@@ -8,9 +8,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import com.acb.ams.Models.Activities;
 import com.acb.ams.Models.Course;
+import com.acb.ams.Models.Criterion;
 import com.acb.ams.Models.Person;
 import com.acb.ams.Models.Qualification;
 import com.acb.ams.Models.Subject;
@@ -88,6 +91,58 @@ public class DatabaseConnector {
             System.err.println("Error al verificar el usuario: " + e.getMessage());
             return false; // Retorna false si ocurre algún error
         }
+    }
+
+    public ObservableList<Activities> getActivitiesForTableDashboard(String nombre) {
+        String query = """
+                SELECT
+                    asig.asig_nombre AS asignatura, 
+                    act.act_nombre AS actividad,
+                    act.act_fecha AS fecha_actividad,
+                    act.act_nota AS nota,
+                    crit.crit_nombre AS criterio
+                FROM ams_personas per
+                JOIN ams_cursos cur ON per.cur_id = cur.cur_id
+                JOIN ams_pensum pen ON cur.pen_id = pen.pen_id
+                JOIN ams_asignaturas asig ON pen.pen_id = asig.pen_id
+                JOIN ams_actividades act ON asig.asig_id = act.asig_id
+                JOIN ams_criterios crit ON act.crit_id = crit.crit_id
+                JOIN ams_notas nots ON act.asig_id = nots.asig_id AND nots.est_id = per.per_id
+                WHERE per.per_nombres = ?;
+                """;
+
+        ObservableList<Activities> activities = FXCollections.observableArrayList();
+
+        try (Connection connection = getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            // Establecer el parámetro de la consulta
+            preparedStatement.setString(1, nombre);
+
+            // Ejecutar la consulta
+            ResultSet rs = preparedStatement.executeQuery();
+
+            System.out.println("Consulta hecha exitosamente - Estudiantes de un curso");
+
+            // Recorrer los resultados
+            while (rs.next()) {
+                String asignatura = rs.getString("asignatura");
+                String actividad = rs.getString("actividad");
+                Date fechaActividad = rs.getDate("fecha_actividad");
+                Double nota = rs.getDouble("nota");
+                String criterio = rs.getString("criterio");
+
+                Activities acti = new Activities(asignatura, actividad, fechaActividad, nota, criterio);
+
+
+                // Agregar la actividad a la lista
+                activities.add(acti);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Registrar el error
+        }
+
+        return activities; // Siempre devuelve la lista, aunque esté vacía
     }
 
     // Consultas para Admin
@@ -308,7 +363,7 @@ public class DatabaseConnector {
                 WHERE per.per_nombres = ?
                 """;
 
-        ObservableList<Subject> listSubject = FXCollections.observableArrayList();
+        ObservableList<Subject> criterions = FXCollections.observableArrayList();
 
         try (Connection connection = getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -324,13 +379,13 @@ public class DatabaseConnector {
             while (rs.next()) {
                 String nombre = rs.getString("nombre");
                 Subject subject = new Subject(nombre); // Constructor correcto
-                listSubject.add(subject);
+                criterions.add(subject);
             }
         } catch (Exception e) {
             e.printStackTrace(); // Registrar el error
         }
 
-        return listSubject; // Siempre devuelve la lista, aunque esté vacía
+        return criterions; // Siempre devuelve la lista, aunque esté vacía
     }
 
     public Qualification[] getAveranges(String studentName) {
@@ -437,7 +492,7 @@ public class DatabaseConnector {
                 AND PAS.ASIG_ID = ?
                 """;
 
-        ObservableList<Person> listSubject = FXCollections.observableArrayList();
+        ObservableList<Person> criterions = FXCollections.observableArrayList();
 
         try (Connection connection = getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -456,13 +511,13 @@ public class DatabaseConnector {
                 Integer ID = rs.getInt("ID");
                 Integer cursoID = rs.getInt("CURSO");
                 Person subject = new Person(nombres, apellidos, ID, cursoID); // Constructor correcto
-                listSubject.add(subject);
+                criterions.add(subject);
             }
         } catch (Exception e) {
             e.printStackTrace(); // Registrar el error
         }
 
-        return listSubject; // Siempre devuelve la lista, aunque esté vacía
+        return criterions; // Siempre devuelve la lista, aunque esté vacía
     }
 
     public String capitalize(String nombre) {
