@@ -5,6 +5,7 @@ import com.acb.ams.Controllers.Admin.AdminController;
 import com.acb.ams.Controllers.Login.LoginController;
 import com.acb.ams.Controllers.Professor.ProfessorControler;
 import com.acb.ams.Controllers.Student.StudentController;
+import com.almasb.fxgl.achievement.Achievement;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -16,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 //import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.PopupWindow.AnchorLocation;
 
 public class ViewFactory {
 
@@ -25,13 +27,19 @@ public class ViewFactory {
     private AnchorPane courseStudent;
 
 
-    //Teacher Views
-
+    //Admin Views
+    private final StringProperty adminSelectedMenuItem;
+    private AnchorPane  adminUserView;
+    private AnchorPane adminCursosView;
+    private AnchorPane adminGestionCursos;
+    private AnchorPane AdminProfAsig;
 
     // Implementación del patrón Singleton para garantizar que solo haya una instancia
     private static ViewFactory instance;
 
 
+
+    //Interfaces Student
     public AnchorPane getDashboardStudent(){
         if (dashboardStudent == null) {
             try {
@@ -54,12 +62,42 @@ public class ViewFactory {
         return courseStudent;
     }
 
-
     public StringProperty getStudentSelectedItem(){
         return studentSelectedMenuItem;
     }
+    
+    //Interfaces Admin
+    public AnchorPane getAdminUserView(){
+        if (adminUserView == null) {
+            try {
+                adminUserView = new FXMLLoader(getClass().getResource("/Fxml/Admin/AdminUserView.fxml")).load();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return adminUserView;
+    }
+    
+    public StringProperty getAdminSelectMenuItem(){
+        return adminSelectedMenuItem;
+    }
+    
+    public AnchorPane getAdminGestionCursos(){
+        if (adminCursosView == null) {
+            try {
+                adminCursosView = new FXMLLoader(getClass().getResource("/Fxml/Admin/AdminGestionCursos.fxml")).load();
+            } catch (Exception e) {
+               e.printStackTrace();
+            }
+        }
+        return adminCursosView;
+    }
+    
+    
+    
     public ViewFactory(){
         this.studentSelectedMenuItem = new SimpleStringProperty("");
+        this.adminSelectedMenuItem = new SimpleStringProperty("");
     }
 
     public ViewFactory getInstance() {

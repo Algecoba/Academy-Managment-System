@@ -39,7 +39,7 @@ public class StudentMenuController implements Initializable {
         if (studentController == null) {
             Parent root = null;
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/Student/Student.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/Student/Admmin.fxml"));
                 root = loader.load(); // Cargar archivo FXML
                 System.out.println("Archivo FXML cargado correctamente.");
                 studentController = loader.getController();

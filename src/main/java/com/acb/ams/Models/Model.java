@@ -1,17 +1,11 @@
 package com.acb.ams.Models;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.time.LocalDate;
+
 
 import com.acb.ams.Data.DatabaseConnector;
 import com.acb.ams.Views.ViewFactory;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+
 
 //Clase model...Intermediaria ?? 
 public class Model {

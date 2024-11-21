@@ -2,8 +2,10 @@ package com.acb.ams.Controllers.Admin;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -30,9 +32,35 @@ public class AdminMenuController implements Initializable {
     @FXML
     public Button ad_LogOutBtn;
 
+
+    AdminController adminController;
+
+    public AdminController adminController(){
+        if (adminController == null) {
+            Parent root = null;
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/Admin/Admin.fxml"));
+                root = loader.load();
+                System.out.println("Admin cargado correctamente");
+                adminController = loader.getController();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if (root == null) {
+                System.out.println("Error: Nodo Raiz del archivo fxml es null");
+                return null;
+            }
+        }
+        return adminController;
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Asignar manejadores de eventos a cada botón
+        addListener();
+    }
+
+    public void addListener(){
         ad_UsersBtn.setOnAction(event -> handleUsersBtn());
         ad_AsiganutrasBtn.setOnAction(event -> handleAsignaturasBtn());
         ad_CursosBtn.setOnAction(event -> handleCursosBtn());
@@ -40,11 +68,9 @@ public class AdminMenuController implements Initializable {
         ad_ProfileBtn.setOnAction(event -> handleProfileBtn());
         ad_LogOutBtn.setOnAction(event -> handleLogOutBtn(event));
     }
-
     // Método para manejar el evento del botón Usuarios
     private void handleUsersBtn() {
-        System.out.println("Botón Usuarios presionado");
-        // Lógica para gestionar usuarios
+        Model.getInstance().getViewFactory().getAdminSelectMenuItem().set("UserView");;
     }
 
     // Método para manejar el evento del botón Asignaturas
@@ -55,8 +81,7 @@ public class AdminMenuController implements Initializable {
 
     // Método para manejar el evento del botón Cursos
     private void handleCursosBtn() {
-        System.out.println("Botón Cursos presionado");
-        // Lógica para gestionar cursos
+        Model.getInstance().getViewFactory().getAdminSelectMenuItem().set("CursosView");
     }
 
     // Método para manejar el evento del botón Reportes

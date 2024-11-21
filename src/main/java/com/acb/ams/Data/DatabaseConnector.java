@@ -96,86 +96,87 @@ public class DatabaseConnector {
 
     // Consultas para Admin
     public void insertPerson(
-            String tipoUsuarioComboBox,
-            String identificacionTxt,
-            String tipoIdTxt,
-            String nombresTxt,
-            String apellidosTxt,
-            String direccionTxt,
-            String barrioTxt,
-            String ciudadTxt,
-            String correoTxt,
-            String celularTxt,
-            LocalDate fechaMatriculaPicker,
-            String cursoComboBox,
-            LocalDate fechaContratacionPicker) {
+        String tipoUsuarioComboBox,
+        String identificacionTxt,
+        String nombresTxt,
+        String apellidosTxt,
+        String estado) {
 
-        String insertPersonSQL = "INSERT INTO AMS_PERSONAS (PER_EMAIL, PER_NOMBRES, PER_APELLIDOS, PER_ESTADO, PER_TIPO, CUR_ID) VALUES (?, ?, ?, 'Activo', ?, ?)";
-        String insertContactSQL = "INSERT INTO AMS_CONTACTO (CONT_CORREO, CONT_DIRECCION, CONT_CIUDAD, CONT_TELEFONO, PER_ID) VALUES (?, ?, ?, ?, ?)";
+    String insertPersonSQL = """
+        INSERT INTO AMS_PERSONAS (PER_TIPO, PER_CODIGO, PER_NOMBRES, PER_APELLIDOS, PER_ESTADO) 
+        VALUES (?, ?, ?, ?, ?);
+    """;
 
-        Connection conn = null;
-        PreparedStatement insertPersonStmt = null;
-        PreparedStatement insertContactStmt = null;
+    Connection conn = null;
+    PreparedStatement insertPersonStmt = null;
 
-        try {
-            conn = getConnection();
-            conn.setAutoCommit(false); // Inicia una transacción
+    try {
+        conn = getConnection();
 
-            // Insertar datos en AMS_PERSONAS
-            insertPersonStmt = conn.prepareStatement(insertPersonSQL, Statement.RETURN_GENERATED_KEYS);
-            insertPersonStmt.setString(1, correoTxt);
-            insertPersonStmt.setString(2, nombresTxt);
-            insertPersonStmt.setString(3, apellidosTxt);
-            insertPersonStmt.setString(4, tipoUsuarioComboBox);
-            insertPersonStmt.setString(5, "Estudiante".equals(tipoUsuarioComboBox) ? cursoComboBox : null);
-            insertPersonStmt.executeUpdate();
+        if (conn == null) {
+            throw new SQLException("No se pudo obtener la conexión a la base de datos.");
+        }
 
-            // Obtener el ID generado automáticamente
-            ResultSet generatedKeys = insertPersonStmt.getGeneratedKeys();
-            if (!generatedKeys.next()) {
+        conn.setAutoCommit(false); // Inicia una transacción
+
+        // Preparar la consulta
+        insertPersonStmt = conn.prepareStatement(insertPersonSQL, Statement.RETURN_GENERATED_KEYS);
+
+        // Establecer los valores en el PreparedStatement
+        insertPersonStmt.setString(1, tipoUsuarioComboBox);
+        insertPersonStmt.setString(2, identificacionTxt);
+        insertPersonStmt.setString(3, nombresTxt);
+        insertPersonStmt.setString(4, apellidosTxt);
+        insertPersonStmt.setString(5, estado);
+
+        // Ejecutar la consulta
+        int rowsAffected = insertPersonStmt.executeUpdate();
+
+        if (rowsAffected == 0) {
+            throw new SQLException("No se insertó ninguna fila en la tabla AMS_PERSONAS.");
+        }
+
+        // Obtener el ID generado automáticamente
+        try (ResultSet generatedKeys = insertPersonStmt.getGeneratedKeys()) {
+            if (generatedKeys.next()) {
+                int personId = generatedKeys.getInt(1);
+                System.out.println("Persona insertada con ID: " + personId);
+            } else {
                 throw new SQLException("No se pudo obtener el ID generado para la persona.");
             }
-            int personId = generatedKeys.getInt(1);
+        }
 
-            // Insertar datos en AMS_CONTACTO si no es un administrador
-            if (!"Administrador".equals(tipoUsuarioComboBox)) {
-                insertContactStmt = conn.prepareStatement(insertContactSQL);
-                insertContactStmt.setString(1, correoTxt);
-                insertContactStmt.setString(2, direccionTxt);
-                insertContactStmt.setString(3, ciudadTxt);
-                insertContactStmt.setString(4, celularTxt);
-                insertContactStmt.setInt(5, personId);
-                insertContactStmt.executeUpdate();
-            }
-
-            // Confirmar la transacción
-            conn.commit();
-            System.out.println("Persona insertada correctamente.");
-
-        } catch (SQLException e) {
-            if (conn != null) {
-                try {
-                    conn.rollback(); // Revertir la transacción en caso de error
-                } catch (SQLException rollbackEx) {
-                    rollbackEx.printStackTrace();
-                }
-            }
-            e.printStackTrace();
-        } finally {
+        // Confirmar la transacción
+        conn.commit();
+    } catch (SQLException e) {
+        // Revertir la transacción en caso de error
+        if (conn != null) {
             try {
-                if (insertPersonStmt != null)
-                    insertPersonStmt.close();
-                if (insertContactStmt != null)
-                    insertContactStmt.close();
-                if (conn != null)
-                    conn.setAutoCommit(true); // Restaurar el modo por defecto
-                if (conn != null)
-                    conn.close();
+                conn.rollback();
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+        }
+        e.printStackTrace();
+    } finally {
+        // Cerrar recursos
+        if (insertPersonStmt != null) {
+            try {
+                insertPersonStmt.close();
+            } catch (SQLException closeEx) {
+                closeEx.printStackTrace();
+            }
+        }
+        if (conn != null) {
+            try {
+                conn.close();
             } catch (SQLException closeEx) {
                 closeEx.printStackTrace();
             }
         }
     }
+}
+
 
     // Consultas para Profesores
     public ObservableList<Person> dataForTableActividades() {
