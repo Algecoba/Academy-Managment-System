@@ -17,17 +17,8 @@ public class Qualification {
     // Relación con Estudiante (Persona)
     private Person estudiante;
 
-    public Qualification(int notId, String notDesempenio, double notDefinitiva, int asigId, int corId, int estId,
-            Subject asignatura, GradingPeriod corte, Person estudiante) {
-        this.notId = notId;
-        this.notDesempenio = notDesempenio;
+    public Qualification(Double notDefinitiva) {
         this.notDefinitiva = notDefinitiva;
-        this.asigId = asigId;
-        this.corId = corId;
-        this.estId = estId;
-        this.asignatura = asignatura;
-        this.corte = corte;
-        this.estudiante = estudiante;
     }
 
     public int getNotId() {
@@ -101,6 +92,10 @@ public class Qualification {
     public void setEstudiante(Person estudiante) {
         this.estudiante = estudiante;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "" + notDefinitiva;
+    }
+
 }

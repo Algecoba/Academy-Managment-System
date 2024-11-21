@@ -1,87 +1,104 @@
 package com.acb.ams.Controllers.Student;
 
-import com.acb.ams.Models.Course;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import com.acb.ams.Models.Model;
+import com.acb.ams.Models.Qualification;
+import com.acb.ams.Models.Subject;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
-import java.net.URL;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.ResourceBundle;
+public class DashboardController {
 
-public class DashboardController implements Initializable {
+    @FXML
+    private Text saludoNombreTxt;
 
-    public Text saludoNombreTxt;
+    @FXML
+    private ListView<Subject> CoursesListView;
 
-    //Mostrar los promedios de cada periodo del estudiante
-    public Label promedio1lbl;
-    public Label promedio2lbl;
-    public Label promedio3lbl;
-    public Label promedio4lbl;
+    @FXML
+    private Label promedio1lbl;
 
-    //Visualización de las ultimas actividades realizadas por el estudiante
-    //En todas sus asignaturas
-    public TableColumn colAsignatura;
-    public TableColumn colActividad;
-    public TableColumn colFecha;
-    public TableColumn colNota;
+    @FXML
+    private Label promedio2lbl;
+
+    @FXML
+    private Label promedio3lbl;
+
+    @FXML
+    private Label promedio4lbl;
 
     @FXML
     private Label loginDate;
 
     @FXML
-    private ListView<Course> CoursesListView;
+    private TableView<?> actividadesTable;
 
-    // Usando ObservableList para la lista de cursos
-    private ObservableList<Course> coursesObservableList;
+    @FXML
+    private TableColumn<?, ?> colAsignatura;
 
-    private String nombre;
+    @FXML
+    private TableColumn<?, ?> colActividad;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    @FXML
+    private TableColumn<?, ?> colFecha;
 
-        // Configurar el nombre de usuario, puedes obtenerlo de la sesión o base de datos
-        nombre = getNombre();
-        saludoNombreTxt.setText("Hola, " + Model.getInstance().capitalize(nombre));  // Cambiar según el usuario
-        
-        // Inicializar la lista de cursos
-        coursesObservableList = FXCollections.observableArrayList(getCourses()); // Usamos ObservableList
+    @FXML
+    private TableColumn<?, ?> colNota;
 
-        // Si no hay cursos, no agregar nada al ListView
-        if (coursesObservableList != null && !coursesObservableList.isEmpty()) {
-            CoursesListView.setItems(coursesObservableList);
-            System.out.println(coursesObservableList); 
-// Asignamos la ObservableList al ListView
+    @FXML
+    public void initialize() {
+        String nombre = Model.getInstance().getDataBase().getName();
+        loginDate.setText(fechaActual());
+
+        // Configurar saludo inicial
+        saludoNombreTxt.setText("Hola, " + capitalize(nombre));
+
+        // Configurar la lista de cursos
+        CoursesListView.setItems(Model.getInstance().getDataBase().getSubjectStudent(nombre));
+        ;
+
+        // Configurar los promedios
+        Qualification[] averages = Model.getInstance().getDataBase().getAveranges(nombre);
+        promedio1lbl.setText("" + averages[0].toString());
+        promedio2lbl.setText("" + averages[1].toString());
+        promedio3lbl.setText("" + averages[2].toString());
+        promedio4lbl.setText("" + averages[3].toString());
+
+        // Configurar columnas de la tabla (puedes personalizar los valores en función
+        // de tu modelo de datos)
+        colAsignatura.setText("Asignatura");
+        colActividad.setText("Actividad");
+        colFecha.setText("Fecha");
+        colNota.setText("Nota");
+
+        // Aquí podrías cargar datos en la tabla
+        // actividadesTable.setItems(...);
+    }
+
+    public String capitalize(String nombre) {
+        String name = nombre;
+        if (name == null || nombre.isEmpty()) {
+            return name; // Devuelve el mismo valor si es null o vacío
         }
-
-        // Mostrar los promedios en las etiquetas correspondientes
-        // Para efectos de prueba, se agregan promedios simulados
-        promedio1lbl.setText("4.5");
-        promedio1lbl.setText("4.6");
-        promedio1lbl.setText("4.8");
-        promedio1lbl.setText("5.0");
-
-        // Mostrar la fecha actual
-        LocalDate currentDate = LocalDate.now();
-        loginDate.setText("Hoy, " + currentDate.toString());
+        return name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
     }
 
-    // Método para obtener cursos, ya no es simulado
-    private List<Course> getCourses() {
-        // Aquí deberías obtener la lista de cursos de la base de datos o algún servicio
-        return Model.getInstance().getCourseStudent(nombre);
-         // Traemos los cursos del modelo
+    public String fechaActual() {
+        // Configurar la fecha y hora actuales
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        String currentDateTime = LocalDateTime.now().format(formatter);
+        return currentDateTime;
+
     }
 
-    private String getNombre(){
-        return Model.getInstance().getCodigo(); // Obtenemos el nombre del estudiante o código
+    public void dashboardControllerInstancia() {
+
     }
 }

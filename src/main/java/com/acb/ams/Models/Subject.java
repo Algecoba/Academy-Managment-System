@@ -9,11 +9,9 @@ public class Subject {
     private String name;
     private List<GradingPeriod> gradingPeriod;
 
-    public Subject(int id, String name) {
-        this.id = id;
+    public Subject(String name) {
         this.name = name;
     }
-
 
     public int getId() {
         return id;
@@ -39,15 +37,9 @@ public class Subject {
         this.gradingPeriod = gradingPeriod;
     }
 
-
     @Override
     public String toString() {
-        return "Subject: \n" +
-               "ID: " + id + "\n" +
-               "Name: " + name + "\n" +
-               "Grading Period: " + gradingPeriod + "\n";
+        return name;
     }
-
-    
 
 }

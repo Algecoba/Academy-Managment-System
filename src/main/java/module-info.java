@@ -1,6 +1,7 @@
 
 module com.acb.ams {
     // Requerimientos de JavaFX
+
     requires transitive javafx.controls;
     requires transitive javafx.fxml;
     requires transitive javafx.graphics;
@@ -16,12 +17,14 @@ module com.acb.ams {
     requires com.almasb.fxgl.all;
 
     // Requerimientos de bases de datos
-    requires java.sql;
+    requires transitive java.sql;
+
     // requires mysql.connector.j; // Descomentar si se usa MySQL
 
     // Requerimientos adicionales para íconos y fuentes
     requires de.jensd.fx.glyphs.fontawesome;
     requires javafx.base;
+    requires java.desktop;
 
     // Exportación de paquetes necesarios
     exports com.acb.ams;
@@ -31,6 +34,7 @@ module com.acb.ams {
     exports com.acb.ams.Controllers.Login;
     exports com.acb.ams.Views;
     exports com.acb.ams.Models;
+    exports com.acb.ams.Data;
 
     // Apertura para la reflexión (acceso por parte de JavaFX)
     opens com.acb.ams to javafx.fxml;
@@ -38,4 +42,6 @@ module com.acb.ams {
     opens com.acb.ams.Controllers.Professor to javafx.fxml;
     opens com.acb.ams.Controllers.Student to javafx.fxml;
     opens com.acb.ams.Controllers.Login to javafx.fxml;
+    opens com.acb.ams.Data;
+    opens com.acb.ams.Models;
 }

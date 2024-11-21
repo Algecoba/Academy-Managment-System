@@ -6,11 +6,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
+import com.acb.ams.Models.*;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class StudentCursosController {
 
     @FXML
-    private ComboBox<String> asignaturaComboBox;
+    private ComboBox<Subject> asignaturaComboBox;
 
     @FXML
     private Label NombreProfesorTxt;
@@ -48,6 +52,8 @@ public class StudentCursosController {
     @FXML
     private TableColumn<Object, Double> colPorcentAsistencias;
 
+    ObservableList<Person> EstudiantesAsignatura = FXCollections.observableArrayList();;
+
     @FXML
     public void initialize() {
         // Inicializa el comboBox con opciones.
@@ -64,7 +70,21 @@ public class StudentCursosController {
                 notasStPane.setVisible(true);
             }
         });
+        // Coloca las asignaturas del estudiante en el combobox
+        var modeloBase = Model.getInstance().getDataBase();
+        String nombreUsuario = modeloBase.getName();
+        ObservableList<Subject> asigns = modeloBase.getSubjectStudent(nombreUsuario);
+        this.asignaturaComboBox.setItems(asigns);
 
         // Agregar lógica adicional si es necesario.
+        // Colocar nombre del profesor
+        this.asignaturaComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            String asignaturaSeleccionada = newValue.toString();
+            this.NombreProfesorTxt.setText(modeloBase.getTeacherName(nombreUsuario, asignaturaSeleccionada));
+            EstudiantesAsignatura = modeloBase.getEstudiantesAsignaturaProfesor(newValue, modeloBase.getLastUserID());
+            colNombre.set
+        });
+
     }
+
 }

@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1080.0" styleClass="dashboard" stylesheets="@../../Styles/DashboardStudent.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.acb.ams.Controllers.Student.DashboardController">
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" styleClass="dashboard" stylesheets="@../../Styles/DashboardStudent.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.acb.ams.Controllers.Student.DashboardController">
    <Text fx:id="saludoNombreTxt" layoutX="53.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="user_name" text="Hola, Alex" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="25.0" />
-   <Text layoutX="25.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="section_title" text="Mis cursos" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="60.0" />
+   <Text layoutX="25.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="section_title" text="Mis Asignaturas" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="60.0" />
    <Text layoutX="736.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="section_title" text="Promedios" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="60.0" />
    <HBox layoutX="25.0" layoutY="84.0" prefHeight="200.0" prefWidth="850.0" spacing="10.0" styleClass="courses_view" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="80.0">
       <ListView fx:id="CoursesListView" prefHeight="200.0" prefWidth="850.0" />

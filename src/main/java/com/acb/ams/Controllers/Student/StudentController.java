@@ -1,57 +1,40 @@
 package com.acb.ams.Controllers.Student;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.acb.ams.Models.Model;
+
 public class StudentController implements Initializable {
 
+    // Referencia al AnchorPane en la sección 'center'
+
     @FXML
-    private BorderPane borderPane; // El BorderPane principal.
+    public BorderPane studentParent;
+
+    @FXML
+    private AnchorPane leftAnchorPane; // Referencia al AnchorPane en la sección 'left'
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("StudentController inicializado");
+    public void initialize(URL arg0, ResourceBundle arg1) {
+        Model.getInstance().getViewFactory().getStudentSelectedItem().addListener((observableValue, oldVal, newVal) -> {
+            switch (newVal) {
+                case "Cursos":
+                    studentParent.setCenter(Model.getInstance().getViewFactory().getCourseStudent());
 
-        // Cargar la vista predeterminada (Dashboard)
-        loadDashboard();
-    }
+                    break;
 
-    /**
-     * Método para cargar una vista específica en el centro del BorderPane.
-     * @param fxmlPath Ruta del archivo FXML a cargar.
-     */
-    private void loadInterface(String fxmlPath) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent root = loader.load();
-
-            // Configurar el controlador hijo (si es necesario)
-            Object controller = loader.getController();
-            if (controller instanceof StudentMenuController) {
-                ((StudentMenuController) controller).setStudentController(this);
+                default:
+                    studentParent.setCenter(Model.getInstance().getViewFactory().getDashboardStudent());
+                    break;
             }
-
-            // Establecer la vista cargada en el centro del BorderPane
-            borderPane.setCenter(root);
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error al cargar la interfaz: " + fxmlPath);
-        }
+        });
     }
 
-    // Métodos para cargar vistas específicas
-    public void loadDashboard() {
-        loadInterface("/com/acb/ams/Views/Dashboard.fxml");
-    }
-
-    public void loadStudentCursos() {
-        loadInterface("/com/acb/ams/Views/StudentCursos.fxml");
-    }
 }

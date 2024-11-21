@@ -83,7 +83,7 @@ public class AdminMenuController implements Initializable {
             // Lógica para cerrar la sesión y mostrar la ventana de login
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.close();
-            Model.getInstance().getViewFactory().showLoginWindow(null);
+            Model.getInstance().getViewFactory().showLoginWindow();
         } else {
             System.out.println("Cancelando cierre de sesion.");
         }

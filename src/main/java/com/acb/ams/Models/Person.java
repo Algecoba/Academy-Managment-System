@@ -1,7 +1,6 @@
 
 package com.acb.ams.Models;
 
-
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.StringProperty;
@@ -44,6 +43,17 @@ public class Person {
         this.perNombres = new SimpleStringProperty(perNombres);
         this.activitie = new SimpleStringProperty(activitie);
         this.qualification = new SimpleDoubleProperty(qualification);
+    }
+
+    // El constructor instancia como nulo las propiedades finales porque no sabia
+    // que hacian
+    public Person(String Nombres, String Apellidos, Integer CursoID, Integer ID) {
+        this.perNombres = new SimpleStringProperty(Nombres);
+        this.perApellidos = new SimpleStringProperty(Apellidos);
+        this.curId = CursoID;
+        this.perId = ID;
+        this.activitie = null;
+        this.qualification = null;
     }
 
     public int getPerId() {
