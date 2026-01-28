@@ -17,6 +17,14 @@ public class Criterion {
         this.asignatura = asignatura;
     }
 
+    
+
+    public Criterion(String critNombre) {
+        this.critNombre = critNombre;
+    }
+
+
+
     public int getCritId() {
         return critId;
     }

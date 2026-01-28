@@ -10,11 +10,21 @@ public class Attendance {
     private LocalDate asisFecha;
     private String asisEstado;
 
+    private double PorcentAsistencias;
+    private double PorcentInsasistencias;
+
     // Relación con Estudiante (Persona)
     private Person estudiante;
 
     // Relación con Asignatura
     private Subject asignatura;
+
+    public Attendance( Subject asignatura, double PorcentAsistencias, double PorcentInsasistencias){
+        this.asignatura = asignatura;
+        this.PorcentAsistencias = PorcentAsistencias;
+        this.PorcentInsasistencias = PorcentInsasistencias;
+    }
+
 
     public Attendance(int asisId, int estId, int asigId, LocalDate asisFecha, String asisEstado, Person estudiante,
             Subject asignatura) {
@@ -26,6 +36,28 @@ public class Attendance {
         this.estudiante = estudiante;
         this.asignatura = asignatura;
     }
+
+    
+
+    public double getPorcentAsistencias() {
+        return PorcentAsistencias;
+    }
+
+
+    public void setPorcentAsistencias(double porcentAsistencias) {
+        PorcentAsistencias = porcentAsistencias;
+    }
+
+
+    public double getPorcentInsasistencias() {
+        return PorcentInsasistencias;
+    }
+
+
+    public void setPorcentInsasistencias(double porcentInsasistencias) {
+        PorcentInsasistencias = porcentInsasistencias;
+    }
+
 
     public int getAsisId() {
         return asisId;

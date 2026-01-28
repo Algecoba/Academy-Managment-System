@@ -1,71 +1,124 @@
 package com.acb.ams.Controllers.Student;
 
-import com.acb.ams.Models.Course;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import com.acb.ams.Models.Model;
+import com.acb.ams.Models.Qualification;
+import com.acb.ams.Models.Subject;
+import com.acb.ams.Models.Activities;
+
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
-import java.net.URL;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.ResourceBundle;
 
-public class DashboardController implements Initializable {
+public class DashboardController {
 
-    public Text saludoNombreTxt;
+    @FXML
+    private Text saludoNombreTxt;
 
-    //Mostrar los promedios de cada periodo del estudiante
-    public Label promedio1lbl;
-    public Label promedio2lbl;
-    public Label promedio3lbl;
-    public Label promedio4lbl;
+    @FXML
+    private ListView<Subject> CoursesListView;
 
-    //Visualización de las ultimas actividades realizadas por el estudiante
-    //En todas sus asignaturas
-    public TableColumn colAsignatura;
-    public TableColumn colActividad;
-    public TableColumn colFecha;
-    public TableColumn colNota;
+    @FXML
+    private Label promedio1lbl;
+
+    @FXML
+    private Label promedio2lbl;
+
+    @FXML
+    private Label promedio3lbl;
+
+    @FXML
+    private Label promedio4lbl;
 
     @FXML
     private Label loginDate;
 
     @FXML
-    private ListView<Course> CoursesListView;
+    private TableView<Activities> actividadesTable;
 
-    // Inicialización de la lista de cursos
-    private List<Course> courses;
+    @FXML
+    private TableColumn<Activities, String> colAsignatura;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Configurar el nombre de usuario, puedes obtenerlo de la sesión o base de datos
-        saludoNombreTxt.setText("Hola, Alejandro");  // Cambiar según el usuario
+    @FXML
+    private TableColumn<Activities, String> colActividad;
 
-        // Inicializar la lista de cursos
-        courses = getCourses(); // Aquí deberías obtener los cursos de la base de datos o de una simulación
+    @FXML
+    private TableColumn<Activities, String> colFecha;
 
-        // Si no hay cursos, no agregar nada al ListView
-        if (courses != null && !courses.isEmpty()) {
-            CoursesListView.getItems().addAll(courses);
-        }
+    @FXML
+    private TableColumn<Activities, Double> colNota;
 
-        // Mostrar los promedios en las etiquetas correspondientes
-        // Para efectos de prueba, se agregan promedios simulados
-        promedio1lbl.setText("4.5");
-        promedio1lbl.setText("4.6");
-        promedio1lbl.setText("4.8");
-        promedio1lbl.setText("5.0");
+    @FXML
+    private TableColumn<Activities, String> colCriterio;
 
-        // Mostrar la fecha actual
-        LocalDate currentDate = LocalDate.now();
-        loginDate.setText("Hoy, " + currentDate.toString());
+    private ObservableList<Activities> activities;
+
+    @FXML
+    public void initialize() {
+        String nombre = Model.getInstance().getDataBase().getName();
+        loginDate.setText(fechaActual());
+
+        // Configurar saludo inicial
+        saludoNombreTxt.setText("Hola, " + capitalize(nombre));
+
+        // Configurar la lista de cursos
+        CoursesListView.setItems(Model.getInstance().getDataBase().getSubjectStudent(nombre));
+
+        // Configurar los promedios
+        setPromedios(Model.getInstance().getDataBase().getAveranges(nombre));
+
+        // Configurar la tabla de actividades
+        configureActivitiesTable(nombre);
     }
 
-    // Método simulado para obtener cursos
-    private List<Course> getCourses() {
-        // Aquí deberías obtener la lista de cursos de la base de datos o algún servicio
-        return List.of(); // Retorna una lista vacía para simular que no hay cursos
+    private void setPromedios(Qualification[] averages) {
+        if (averages != null && averages.length == 4) {
+            promedio1lbl.setText(averages[0].toString());
+            promedio2lbl.setText(averages[1].toString());
+            promedio3lbl.setText(averages[2].toString());
+            promedio4lbl.setText(averages[3].toString());
+        } else {
+            // Manejo de casos en los que los promedios no estén disponibles
+            promedio1lbl.setText("N/A");
+            promedio2lbl.setText("N/A");
+            promedio3lbl.setText("N/A");
+            promedio4lbl.setText("N/A");
+        }
+    }
+
+    private void configureActivitiesTable(String nombre) {
+        activities = Model.getInstance().getDataBase().getActivitiesForTableDashboard(nombre);
+        if (activities != null) {
+            actividadesTable.setItems(activities);
+        }
+
+        // Configurar columnas de la tabla usando lambdas
+        colAsignatura.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAsignatura()));
+        colActividad.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getActNombre()));
+        colFecha.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getActFecha().toString()));
+        colNota.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getActNota()));
+        colCriterio.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCriterio()));
+    }
+
+    public String capitalize(String nombre) {
+        if (nombre == null || nombre.isEmpty()) {
+            return nombre;
+        }
+        return nombre.substring(0, 1).toUpperCase() + nombre.substring(1).toLowerCase();
+    }
+
+    public String fechaActual() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        return LocalDateTime.now().format(formatter);
     }
 }

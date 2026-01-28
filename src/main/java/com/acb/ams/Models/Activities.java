@@ -1,14 +1,14 @@
 package com.acb.ams.Models;
 
+import java.sql.Date;
 
-import java.time.LocalDate;
-
+import javafx.beans.property.StringProperty;
 
 //Clase referente a Actividades
 public class Activities {
     private int actId;
     private String actNombre;
-    private LocalDate actFecha;
+    private java.util.Date actFecha;
     private int estId;
     private int asigId;
     private int critId;
@@ -18,29 +18,21 @@ public class Activities {
     private Person estudiante;
 
     // Relación con Asignatura
-    private Subject asignatura;
+    private String asignatura;
 
     // Relación con Criterio
-    private Criterion criterio;
+    private String criterio;
 
-    public Activities(String actNombre, double actNota, LocalDate actFecha){
-        this.actNombre = actNombre;
-        this.actNota = actNota;
+    public Activities(String asignatura, String actividad, java.util.Date actFecha, double actNota, String criterio) {
+        this.asignatura = asignatura;
+        this.actNombre = actividad;
         this.actFecha = actFecha;
+        this.actNota = actNota;
+        this.criterio = criterio;
     }
 
-    public Activities(int actId, String actNombre, LocalDate actFecha, int estId, int asigId, int critId, double actNota,
-            Person estudiante, Subject asignatura, Criterion criterio) {
-        this.actId = actId;
+    public Activities(String actNombre) {
         this.actNombre = actNombre;
-        this.actFecha = actFecha;
-        this.estId = estId;
-        this.asigId = asigId;
-        this.critId = critId;
-        this.actNota = actNota;
-        this.estudiante = estudiante;
-        this.asignatura = asignatura;
-        this.criterio = criterio;
     }
 
     public int getActId() {
@@ -51,19 +43,25 @@ public class Activities {
         this.actId = actId;
     }
 
-    public String getActNombre() {
-        return actNombre;
+    
+    
+    public String getAsignatura() {
+        return asignatura;
     }
 
-    public void setActNombre(String actNombre) {
-        this.actNombre = actNombre;
+    public void setAsignatura(String asignatura) {
+        this.asignatura = asignatura;
     }
 
-    public LocalDate getActFecha() {
-        return actFecha;
+    public String getCriterio() {
+        return criterio;
     }
 
-    public void setActFecha(LocalDate actFecha) {
+    public void setCriterio(String criterio) {
+        this.criterio = criterio;
+    }
+
+    public void setActFecha(Date actFecha) {
         this.actFecha = actFecha;
     }
 
@@ -107,23 +105,24 @@ public class Activities {
         this.estudiante = estudiante;
     }
 
-    public Subject getAsignatura() {
-        return asignatura;
+
+    @Override
+    public String toString() {
+        return "Activities [actNombre=" + actNombre + "]";
     }
 
-    public void setAsignatura(Subject asignatura) {
-        this.asignatura = asignatura;
+    public java.util.Date getActFecha() {
+        return actFecha;
     }
 
-    public Criterion getCriterio() {
-        return criterio;
+    public String getActNombre() {
+        return actNombre;
     }
 
-    public void setCriterio(Criterion criterio) {
-        this.criterio = criterio;
+    public void setActNombre(String actNombre) {
+        this.actNombre = actNombre;
     }
 
     // Constructor, Getters and Setters
-    
 
 }

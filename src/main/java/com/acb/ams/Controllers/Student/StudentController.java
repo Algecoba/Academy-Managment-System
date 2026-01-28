@@ -1,30 +1,40 @@
 package com.acb.ams.Controllers.Student;
 
 import javafx.fxml.FXML;
+
+import javafx.fxml.Initializable;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
-//import javafx.scene.Scene;
 
-public class StudentController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import com.acb.ams.Models.Model;
+
+public class StudentController implements Initializable {
+
+    // Referencia al AnchorPane en la sección 'center'
 
     @FXML
-    private BorderPane borderPane;  // El BorderPane que contiene los fx:include
+    public BorderPane studentParent;
 
     @FXML
-    private VBox studentMenu;  // Para referenciar el StudentMenu (si es necesario)
+    private AnchorPane leftAnchorPane; // Referencia al AnchorPane en la sección 'left'
 
-    @FXML
-    private VBox dashboard;  // Para referenciar el Dashboard (si es necesario)
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1) {
+        Model.getInstance().getViewFactory().getStudentSelectedItem().addListener((observableValue, oldVal, newVal) -> {
+            switch (newVal) {
+                case "Cursos":
+                    studentParent.setCenter(Model.getInstance().getViewFactory().getCourseStudent());
 
-    // Método de inicialización
-    @FXML
-    public void initialize() {
-        // Aquí podrías cargar lógicas de inicialización si es necesario, como manejar eventos
-        System.out.println("MainController inicializado correctamente.");
+                    break;
+
+                default:
+                    studentParent.setCenter(Model.getInstance().getViewFactory().getDashboardStudent());
+                    break;
+            }
+        });
     }
 
-    // Si necesitas manipular los elementos, por ejemplo, cambiar el contenido del 'center'
-    public void setDashboardContent(VBox newContent) {
-        borderPane.setCenter(newContent); // Cambia el contenido central dinámicamente
-    }
 }
